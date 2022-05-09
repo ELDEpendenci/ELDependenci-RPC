@@ -1,7 +1,5 @@
 env:
-  version: 0.1.1 # 你的版本名稱
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  plugin_name: PluginModule
 
 name: Publish Process
 
@@ -23,7 +21,7 @@ jobs:
          java-version: 18
          pre-release: true
          body: test
-         upload-module: './PluginModule'   
+         upload-module: './ELDependenci-RPC-plugin'
       - name: 'Update javadocs'
         id: update-javadoc
         uses: eric2788/push-javadoc-branch@main

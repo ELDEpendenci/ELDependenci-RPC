@@ -1,0 +1,4 @@
+name: ELDependenci-RPC
+main: org.eldependenci.rpc.ELDependenciRPC
+version: ${project.version}
+depend: [ELDependenci]

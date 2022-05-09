@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.eldependenci</groupId>
-    <artifactId>Template-For-ELDependenci-Addon</artifactId>
+    <artifactId>ELDependenci-RPC-module</artifactId>
     <packaging>pom</packaging>
     <version>0.1.1</version>
     <modules>
-        <module>APIModule</module>
-        <module>PluginModule</module>
+        <module>eldependenci-rpc</module>
+        <module>Eldependenci-RPC-plugin</module>
     </modules>
 
     <repositories>
@@ -29,10 +29,51 @@
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>retrofit</artifactId>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>1.7.31</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.javalin</groupId>
+                <artifactId>javalin</artifactId>
+                <scope>compile</scope>
+                <version>4.5.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.retrofit2</groupId>
+                <artifactId>converter-jackson</artifactId>
+                <version>2.9.0</version>
+                <scope>compile</scope>
+                <optional>true</optional>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-databind</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.12.4</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.retrofit2</groupId>
+                <artifactId>retrofit</artifactId>
+                <version>2.9.0</version>
+                <scope>compile</scope>
+            </dependency>
             <dependency>
                 <groupId>io.papermc.paper</groupId>
                 <artifactId>paper-api</artifactId>
@@ -120,6 +161,7 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.8.1</version>
                     <configuration>
+                        <parameters>true</parameters>
                         <source>18</source>
                         <target>18</target>
                         <encoding>UTF-8</encoding>
