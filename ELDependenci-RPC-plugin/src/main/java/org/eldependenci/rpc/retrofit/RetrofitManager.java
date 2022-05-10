@@ -1,8 +1,7 @@
 package org.eldependenci.rpc.retrofit;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
-import org.eldependenci.rpc.remote.BaseURL;
+import org.eldependenci.rpc.JsonMapperFactory;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
@@ -15,7 +14,7 @@ public final class RetrofitManager {
     private final Map<Class<?>, Object> retroServiceMap = new ConcurrentHashMap<>();
 
     @Inject
-    private ObjectMapper mapper;
+    private JsonMapperFactory factory;
 
     @SuppressWarnings("unchecked")
     public <T> T getRetrofitService(Class<T> clazz) {
@@ -29,7 +28,7 @@ public final class RetrofitManager {
     private <T> T generateRetrofitService(Class<T> clazz) {
         var base = clazz.getAnnotation(BaseURL.class);
         Retrofit fit = new Retrofit.Builder()
-                .addConverterFactory(JacksonConverterFactory.create(mapper))
+                .addConverterFactory(JacksonConverterFactory.create(factory.jsonMapper()))
                 .baseUrl(base.value())
                 .build();
         return fit.create(clazz);

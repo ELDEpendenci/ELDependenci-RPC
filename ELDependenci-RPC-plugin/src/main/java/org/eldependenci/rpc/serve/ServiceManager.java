@@ -6,34 +6,41 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.eldependenci.rpc.exception.MethodNotFoundException;
-import org.eldependenci.rpc.exception.ParameterNotMatchedException;
-import org.eldependenci.rpc.exception.ReturnTypeNotMatchedException;
-import org.eldependenci.rpc.exception.ServiceNotFoundException;
+import org.eldependenci.rpc.JsonMapperFactory;
+import org.eldependenci.rpc.context.RPCError;
+import org.eldependenci.rpc.context.RPCPayload;
+import org.eldependenci.rpc.protocol.ServiceHandler;
+import org.eldependenci.rpc.exception.*;
 
 import javax.inject.Named;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public final class ServiceManager {
+public final class ServiceManager implements ServiceHandler {
 
     private final Map<String, Object> serviceMap = new ConcurrentHashMap<>();
     private final Map<String, Method> serviceMethodCache = new ConcurrentHashMap<>();
 
-    @Inject
-    private ObjectMapper mapper;
+    private final ObjectMapper mapper;
 
     private final DebugLogger logger;
 
     @Inject
-    public ServiceManager(Injector injector, @Named("eldrpc.serves") Set<Class<?>> serves, LoggingService loggingService) {
+    public ServiceManager(
+            Injector injector,
+            @Named("eldrpc.serves") Set<Class<?>> serves,
+            LoggingService loggingService,
+            JsonMapperFactory factory
+    ) {
         this.logger = loggingService.getLogger(ServiceManager.class);
         serves.forEach(serve -> this.serviceMap.put(serve.getSimpleName(), injector.getInstance(serve)));
+        this.mapper = factory.jsonMapper();
     }
 
     @SuppressWarnings("unchecked")
@@ -79,17 +86,46 @@ public final class ServiceManager {
     }
 
 
-    public <T> T validateReturned(Object returned, Class<T> type) throws ReturnTypeNotMatchedException {
-        if (!type.isAssignableFrom(returned.getClass())) {
+    public Object validateReturned(Object returned, Type type) throws ReturnTypeNotMatchedException {
+        var javaType = mapper.constructType(type);
+        if (!javaType.isTypeOrSuperTypeOf(returned.getClass())) {
             throw new ReturnTypeNotMatchedException(type.getTypeName(), returned.getClass().getName(), returned);
         }
         logger.debug("belongs to ConfigurationSerializable: {0}", returned instanceof ConfigurationSerializable);
-        logger.debug("serializing {0}", returned.getClass());
-        return mapper.convertValue(returned, type);
+        logger.debug("serializing {0} to {1}", returned.getClass(), type.getTypeName());
+        return mapper.convertValue(returned, javaType);
     }
 
-    public Object noValidateReturned(Object returned, Type type) {
-        return returned;
+    @Override
+    public Response invokes(RPCPayload payload) throws Exception {
+        var service = getService(payload.service());
+        var method = getServiceMethod(service, payload.method());
+        var args = method.getParameterCount() == 0 ? new Object[0] : payload.parameters();
+        var returned = invokeServiceMethod(service, method, args);
+        return new Response(returned, method.getGenericReturnType());
     }
 
+    @Override
+    public Object finalizeType(Object result, Type returnType) throws Exception {
+        return validateReturned(result, returnType);
+    }
+
+    @Override
+    public boolean shouldCallAsync(RPCPayload payload) throws Exception {
+        var service = getService(payload.service());
+        var method = getServiceMethod(service, payload.method());
+        return method.isAnnotationPresent(DoAsync.class);
+    }
+
+    @Override
+    public RPCError toRPCError(Exception e, boolean debug) {
+        if (e instanceof ServiceException) {
+            logger.debug("Resolved Exception: {0} => {1}", e.getClass().getSimpleName(), e.getMessage());
+        } else {
+            logger.warn("Resolved Exception: {0} => {1} ", e.getClass().getSimpleName(), e.getMessage());
+            logger.debug(e);
+        }
+        var code = e instanceof ServiceException ? 400 : 500;
+        return new RPCError(code, e.getMessage(), debug ? Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new) : new String[0]);
+    }
 }

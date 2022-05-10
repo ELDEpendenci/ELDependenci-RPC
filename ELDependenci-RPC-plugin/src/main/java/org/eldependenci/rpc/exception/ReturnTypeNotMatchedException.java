@@ -5,13 +5,13 @@ public class ReturnTypeNotMatchedException extends ServiceException {
     private final String expectedType;
     private final String actualType;
 
-    private final Object o;
+    private final Object value;
 
     public ReturnTypeNotMatchedException(String expectedType, String actualType, Object o) {
         super(String.format("Cannot handle return object (%s), expected type %s but got %s", o.toString(), expectedType, actualType));
         this.expectedType = expectedType;
         this.actualType = actualType;
-        this.o = o;
+        this.value = o;
     }
 
     public String getExpectedType() {
@@ -22,7 +22,7 @@ public class ReturnTypeNotMatchedException extends ServiceException {
         return actualType;
     }
 
-    public Object getO() {
-        return o;
+    public Object getValue() {
+        return value;
     }
 }

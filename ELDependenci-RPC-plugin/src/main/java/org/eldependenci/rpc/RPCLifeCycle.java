@@ -4,12 +4,13 @@ import com.ericlam.mc.eld.ELDLifeCycle;
 import com.ericlam.mc.eld.services.ScheduleService;
 import com.google.inject.Inject;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.eldependenci.rpc.serve.ServeManager;
+import org.eldependenci.rpc.serve.ServiceableManager;
 
 public class RPCLifeCycle implements ELDLifeCycle {
 
+
     @Inject
-    private ServeManager serveManager;
+    private ServiceableManager serviceableManager;
 
     @Inject
     private ScheduleService scheduleService;
@@ -21,11 +22,10 @@ public class RPCLifeCycle implements ELDLifeCycle {
     @Override
     public void onEnable(JavaPlugin javaPlugin) {
         if (config.enabled) {
-            scheduleService
-                    .runAsync(javaPlugin, () -> serveManager.startServe())
-                    .thenRunSync(v -> javaPlugin.getLogger().info("RPC Server started"))
+            serviceableManager.startAllServices()
+                    .thenRunSync(v -> javaPlugin.getLogger().info("All RPC Services Started."))
                     .joinWithCatch(ex -> {
-                        javaPlugin.getLogger().severe("Failed to start RPC server: " + ex.getMessage());
+                        javaPlugin.getLogger().severe("Failed to start RPC services: " + ex.getMessage());
                         ex.printStackTrace();
                     });
         }
@@ -33,6 +33,10 @@ public class RPCLifeCycle implements ELDLifeCycle {
 
     @Override
     public void onDisable(JavaPlugin javaPlugin) {
-        serveManager.stop();
+        try {
+            serviceableManager.stopAllServices().block();
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
     }
 }

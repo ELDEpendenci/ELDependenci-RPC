@@ -1,4 +1,4 @@
-package org.eldependenci.rpc.demo;
+package org.eldependenci.rpc.demo.serve;
 
 import com.ericlam.mc.eld.services.ItemStackService;
 import com.ericlam.mc.eld.services.ScheduleService;
@@ -7,10 +7,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.eldependenci.rpc.ELDependenciRPC;
-import org.eldependenci.rpc.serve.DoAsync;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,7 +42,7 @@ public class DemoService {
                 .getItem();
     }
 
-    public Location getLocation(){
+    public Location getLocation() {
         return new Location(Bukkit.getWorld("world"), 1.0, 1.0, 1.0, 1.0f, 2.0f);
     }
 
@@ -59,7 +57,7 @@ public class DemoService {
         return text;
     }
 
-    public ScheduleService.BukkitPromise<String> responseWithPromise(String text, int seconds)  {
+    public ScheduleService.BukkitPromise<String> responseWithPromise(String text, int seconds) {
         return scheduleService.callAsync(rpc, () -> {
             Thread.sleep(seconds * 1000L);
             return text;
@@ -67,12 +65,12 @@ public class DemoService {
     }
 
 
-    public List<String> testGeneric(List<Integer> list){
+    public List<String> testGeneric(List<Integer> list) {
         return list.stream().map(i -> String.valueOf(i * 2)).collect(Collectors.toList());
     }
 
 
-    public Book getBookFromAuthor(Author author){
+    public Book getBookFromAuthor(Author author) {
         var b = new Book();
         b.name = String.format("%s's book", author.name);
         b.pages = author.age * 2;
@@ -88,5 +86,14 @@ public class DemoService {
     public static class Book {
         public String name;
         public int pages;
+
+
+        @Override
+        public String toString() {
+            return "Book{" +
+                    "name='" + name + '\'' +
+                    ", pages=" + pages +
+                    '}';
+        }
     }
 }
