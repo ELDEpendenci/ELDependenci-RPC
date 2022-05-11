@@ -1,4 +1,0 @@
-servePort: 8888
-asyncTimeout: 60000
-enabled: true
-enableDemo: true

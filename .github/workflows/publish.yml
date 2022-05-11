@@ -21,7 +21,7 @@ jobs:
          java-version: 18
          pre-release: true
          body: test
-         upload-module: './ELDependenci-RPC-plugin'
+         upload-module: './eldependenci-rpc-plugin'
       - name: 'Update javadocs'
         id: update-javadoc
         uses: eric2788/push-javadoc-branch@main
@@ -31,8 +31,6 @@ jobs:
   upload_github_pkg:
     runs-on: ubuntu-latest
     needs: [ build ]
-    # 用於 上傳 maven pkg 到 github
-    if: ${{ false }}
     permissions:
       contents: read
       packages: write

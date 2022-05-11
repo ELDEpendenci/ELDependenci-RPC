@@ -1,8 +1,14 @@
 name: Verify Process
 
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ develop ]
+  push:
+    branches: [ develop ]
 
 jobs:
   build:
@@ -19,4 +25,4 @@ jobs:
         with:
           java-version: 18
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn -B package --file ./pom.xml
