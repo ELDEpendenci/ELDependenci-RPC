@@ -20,13 +20,13 @@ public class RemoteInvocationHandler implements InvocationHandler {
 
     public RemoteInvocationHandler(
             Class<?> service,
-            RequesterManager requesterManager,
-            RPCConfig config
+            RequesterManager requesterManager
     ) {
         this.requesterManager = requesterManager;
         this.requester = requesterManager.getRequester(service);
-        this.serviceName = requesterManager.findInfo(service).map(RPCInfo::serviceName).orElse(service.getSimpleName());
-        this.token = Optional.ofNullable(config.token).map(s -> s.isBlank() ? null : s).orElseGet(() -> System.getenv("RPC_TOKEN"));
+        var rpcInfo = requesterManager.findInfo(service);
+        this.serviceName = rpcInfo.map(RPCInfo::serviceName).orElse(service.getSimpleName());
+        this.token = rpcInfo.map(RPCInfo::authToken).orElse("");
     }
 
     @Override

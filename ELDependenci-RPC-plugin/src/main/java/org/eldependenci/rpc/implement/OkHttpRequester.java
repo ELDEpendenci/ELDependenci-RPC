@@ -36,7 +36,7 @@ public final class OkHttpRequester implements RPCRequester {
         this.serviceName = client.serviceName();
         this.hosts = client.fallbackHosts();
         // insert main host as first
-        this.hosts.add(0, new RPCInfo.FallbackHost(client.host(), client.useTLS()));
+        this.hosts.add(0, new RPCInfo.FallbackHost(client.host(), client.useTLS(), client.authToken()));
     }
 
     public Object invokeRequest(RPCPayload payload, RPCInfo.FallbackHost host) throws Exception {
@@ -74,7 +74,7 @@ public final class OkHttpRequester implements RPCRequester {
 
         for (RPCInfo.FallbackHost host : this.hosts) {
             try {
-                future.complete(invokeRequest(payload, host));
+                future.complete(invokeRequest(payload.copyWithDiffToken(host.authToken()), host));
                 break;
             } catch (IOException e) {
                 LOGGER.warn("service {} I/O error for host: {}, trying using others if any.", payload.service(), host.host());

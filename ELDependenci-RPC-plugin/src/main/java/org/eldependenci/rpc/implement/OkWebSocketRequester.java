@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -46,30 +47,34 @@ public class OkWebSocketRequester implements RPCRequester {
             .build();
     ;
     private @Nullable String serviceName;
-    private List<RPCInfo.FallbackHost> hosts;
 
+    private List<RPCInfo.FallbackHost> hosts;
+    private String token;
     private WebSocket webSocket;
+
+    private RPCInfo info;
 
     @Override
     public void initialize(RPCInfo client) {
+        this.info = client;
         this.serviceName = client.serviceName();
         this.hosts = client.fallbackHosts();
-        hosts.add(new RPCInfo.FallbackHost(client.host(), client.useTLS()));
-        var iterator = hosts.iterator();
-
-        logger.debug("Initializing websocket requester for service: {0}", serviceName);
-
+        hosts.add(new RPCInfo.FallbackHost(client.host(), client.useTLS(), client.authToken()));
+        /*
         launchWebSockets(iterator, client.locate()).whenComplete((v, ex) -> {
             if (ex != null) {
                 logger.warn(ex, "Error while launching service {0}: {1}", client.locate(), ex.getMessage());
             }
         });
 
+         */
+
         httpClient.connectionPool().evictAll();
     }
 
 
     private CompletableFuture<Void> launchWebSockets(Iterator<RPCInfo.FallbackHost> hosts, String locate) {
+
         if (!hosts.hasNext())
             return CompletableFuture.failedFuture(new IllegalStateException("Failed to connect to any hosts for service: " + locate));
         var host = hosts.next();
@@ -92,6 +97,7 @@ public class OkWebSocketRequester implements RPCRequester {
             } else {
                 logger.debug("Connected to host: {0}", host.host());
                 this.webSocket = ws;
+                this.token = host.authToken();
                 future.complete(null);
             }
         });
@@ -157,30 +163,29 @@ public class OkWebSocketRequester implements RPCRequester {
 
     @Override
     public CompletableFuture<Object> offerRequest(RPCPayload payload) throws Exception {
-        var future = new CompletableFuture<Object>();
-        if (webSocket == null) {
-            logger.warn("WebSocket NotFound, wait 3 seconds");
-            logger.debug("is primary thread: {0}", Bukkit.getServer().isPrimaryThread());
-            Thread.sleep(3000);
-            return offerRequest(payload);
-        }
-        try {
-            var b = mapper.writeValueAsBytes(payload);
-            this.callbackMap.put(payload.id(), o -> {
-                if (o instanceof RPCError err) {
-                    logger.warn("Error while handling websocket response: {0}", err.message());
-                    future.completeExceptionally(new Exception(err.message()));
-                } else {
-                    future.complete(o);
-                }
-            });
-            boolean success = webSocket.send(ByteString.of(b));
-            logger.debug("websocket send success: {0}", success);
-        } catch (IOException e) {
-            logger.warn("failed to send payload: {0}", e.getMessage());
-            future.completeExceptionally(e);
-        }
-        return future;
+        var previousFuture = webSocket == null ? launchWebSockets(hosts.iterator(), info.locate()).thenApply(v -> null) : CompletableFuture.completedFuture(null);
+        return previousFuture.thenCompose(v -> {
+            var future = new CompletableFuture<Object>();
+
+            try {
+                var b = mapper.writeValueAsBytes(payload.copyWithDiffToken(token));
+                this.callbackMap.put(payload.id(), o -> {
+                    if (o instanceof RPCError err) {
+                        logger.warn("Error while handling websocket response: {0}", err.message());
+                        future.completeExceptionally(new Exception(err.message()));
+                    } else {
+                        future.complete(o);
+                    }
+                });
+                boolean success = webSocket.send(ByteString.of(b));
+                logger.debug("websocket send success: {0}", success);
+            } catch (IOException e) {
+                logger.warn("failed to send payload: {0}", e.getMessage());
+                future.completeExceptionally(e);
+            }
+
+            return future;
+        });
     }
 
     private void handleResponse(RPCResponse<?> response) {

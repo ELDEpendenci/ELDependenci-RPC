@@ -31,7 +31,7 @@ public final class RemoteManager {
         var proxy = Proxy.newProxyInstance(
                 service.getClassLoader(),
                 new Class[]{service},
-                new RemoteInvocationHandler(service, requestManager, config)
+                new RemoteInvocationHandler(service, requestManager)
         );
         proxyMap.put(service, proxy);
         return (T) proxy;
@@ -49,7 +49,7 @@ public final class RemoteManager {
                     } else {
                         args = args != null ? args : new String[0];
                         var id = System.nanoTime();
-                        var payload = new RPCPayload(id, method.getName(), serviceName, args, config.token);
+                        var payload = new RPCPayload(id, method.getName(), serviceName, args, info.authToken());
                         var future = requester.offerRequest(payload);
                         return this.requestManager.handleFuture(future, method.getGenericReturnType());
                     }

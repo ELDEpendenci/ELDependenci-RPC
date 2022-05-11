@@ -12,9 +12,16 @@ import java.util.List;
  * @param useTLS 是否使用 TLS
  * @param fallbackHosts 後備位址
  */
-public record RPCInfo(String locate, String host, String protocol, @Nullable String serviceName, boolean useTLS, List<FallbackHost> fallbackHosts) {
+public record RPCInfo(
+        String locate,
+        String host, String protocol,
+        @Nullable String serviceName,
+        boolean useTLS,
+        @Nullable String authToken,
+        List<FallbackHost> fallbackHosts
+) {
 
-    public record FallbackHost(String host, boolean useTLS) {
+    public record FallbackHost(String host, boolean useTLS, @Nullable String authToken){
     }
 
 }
