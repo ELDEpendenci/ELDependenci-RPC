@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.eldependenci</groupId>
-    <artifactId>ELDependenci-RPC-module</artifactId>
+    <artifactId>eldependenci-rpc-module</artifactId>
     <packaging>pom</packaging>
     <version>0.0.2</version>
     <modules>

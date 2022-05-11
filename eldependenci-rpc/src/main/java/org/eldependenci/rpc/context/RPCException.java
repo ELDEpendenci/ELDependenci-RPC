@@ -1,6 +1,10 @@
 package org.eldependenci.rpc.context;
 
+/**
+ * RPC錯誤類
+ */
 public class RPCException extends Exception {
+
 
     private final long id;
     private final Exception real;
@@ -9,10 +13,18 @@ public class RPCException extends Exception {
         this.id = id;
     }
 
+    /**
+     *
+     * @return 真正的錯誤
+     */
     public Exception getReal() {
         return real;
     }
 
+    /**
+     *
+     * @return 追蹤 ID
+     */
     public long getId() {
         return id;
     }
