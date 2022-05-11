@@ -19,7 +19,6 @@ jobs:
         uses: eric2788/maven-jar-publish@master
         with:
          java-version: 18
-         pre-release: true
          body: test
          upload-module: './eldependenci-rpc-plugin'
       - name: 'Update javadocs'
