@@ -21,7 +21,7 @@ jobs:
          java-version: 18
          pre-release: true
          body: test
-         upload-module: './ELDependenci-RPC-plugin'
+         upload-module: './eldependenci-rpc-plugin'
       - name: 'Update javadocs'
         id: update-javadoc
         uses: eric2788/push-javadoc-branch@main

@@ -3,6 +3,8 @@ name: Verify Process
 on:
   pull_request:
     branches: [ master ]
+  push:
+    branches: [ develop]
 
 jobs:
   build:
@@ -19,4 +21,4 @@ jobs:
         with:
           java-version: 18
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn -B package --file ./pom.xml

@@ -10,7 +10,7 @@
     <version>0.0.2</version>
     <modules>
         <module>eldependenci-rpc</module>
-        <module>Eldependenci-RPC-plugin</module>
+        <module>eldependenci-rpc-plugin</module>
     </modules>
 
     <repositories>
