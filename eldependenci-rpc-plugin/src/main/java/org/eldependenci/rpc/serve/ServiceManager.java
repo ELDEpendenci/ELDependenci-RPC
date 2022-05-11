@@ -96,6 +96,9 @@ public final class ServiceManager implements ServiceHandler {
 
 
     public Object validateReturned(Object returned, Type type) throws ReturnTypeNotMatchedException {
+        if (type == Void.TYPE){
+            return Void.TYPE.cast(null);
+        }
         var javaType = mapper.constructType(type);
         if (!javaType.isTypeOrSuperTypeOf(returned.getClass())) {
             throw new ReturnTypeNotMatchedException(type.getTypeName(), returned.getClass().getName(), returned);

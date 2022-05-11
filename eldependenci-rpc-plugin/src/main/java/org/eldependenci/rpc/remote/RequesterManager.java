@@ -97,7 +97,14 @@ public final class RequesterManager {
     public Object handleFuture(CompletableFuture<?> future, Type returnType) throws Exception {
 
         var jt = this.mapper.getTypeFactory().constructType(returnType);
-        var realFuture = future.thenApply(r -> this.mapper.convertValue(r, jt));
+        var realFuture = future.thenApply(r -> {
+
+            if (returnType == Void.TYPE) {
+                return Void.TYPE.cast(null);
+            }
+
+            return this.mapper.convertValue(r, jt);
+        });
 
         if (jt.isTypeOrSubTypeOf(CompletableFuture.class)) {
             realFuture = future.thenApply(r -> this.mapper.convertValue(r, jt.getBindings().getBoundType(0)));
