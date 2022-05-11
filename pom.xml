@@ -199,7 +199,7 @@
         <repository>
             <id>github</id>
             <name>Github ELDependenci Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/ELDependenci/eldependenci/eldependenci-rpc</url>
+            <url>https://maven.pkg.github.com/ELDependenci/eldependenci-rpc</url>
             <uniqueVersion>false</uniqueVersion>
         </repository>
     </distributionManagement>
