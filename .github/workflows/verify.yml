@@ -1,10 +1,14 @@
 name: Verify Process
 
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ develop ]
   push:
-    branches: [ develop]
+    branches: [ develop ]
 
 jobs:
   build:
