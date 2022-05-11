@@ -2,6 +2,7 @@ package org.eldependenci.rpc.retrofit;
 
 import com.google.inject.Inject;
 import org.eldependenci.rpc.JsonMapperFactory;
+import org.eldependenci.rpc.annotation.BaseURL;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 

@@ -1,0 +1,11 @@
+remotes:
+  - locate: org.eldependenci.rpc.demo.DemoRemoteService
+    serviceName: DemoService
+    host: "localhost:8888"
+    protocol: HTTP
+    useTLS: false
+    fallbackHosts:
+      - host: "localhost:8889"
+        useTLS: false
+      - host: "localhost:8890"
+        useTLS: false

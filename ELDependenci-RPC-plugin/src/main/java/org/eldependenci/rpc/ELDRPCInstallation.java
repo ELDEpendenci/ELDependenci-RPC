@@ -1,9 +1,8 @@
 package org.eldependenci.rpc;
 
+import org.eldependenci.rpc.annotation.BaseURL;
 import org.eldependenci.rpc.protocol.RPCProtocol;
-import org.eldependenci.rpc.remote.RPCClient;
 import org.eldependenci.rpc.protocol.RPCRequester;
-import org.eldependenci.rpc.retrofit.BaseURL;
 import org.eldependenci.rpc.protocol.RPCServiceable;
 
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public final class ELDRPCInstallation implements RPCInstallation{
+public final class ELDRPCInstallation implements RPCInstallation {
 
     private final Set<Class<?>> retrofits = ConcurrentHashMap.newKeySet();
     private final Set<Class<?>> remotes = ConcurrentHashMap.newKeySet();
@@ -25,7 +24,7 @@ public final class ELDRPCInstallation implements RPCInstallation{
         for (Class<?> service : services) {
             try {
                 this.validateRetrofit(service);
-            }catch (IllegalStateException e) {
+            } catch (IllegalStateException e) {
                 e.printStackTrace();
                 continue;
             }
@@ -38,7 +37,7 @@ public final class ELDRPCInstallation implements RPCInstallation{
         for (Class<?> service : services) {
             try {
                 this.validateRemote(service);
-            }catch (IllegalStateException e) {
+            } catch (IllegalStateException e) {
                 e.printStackTrace();
                 continue;
             }
@@ -58,15 +57,15 @@ public final class ELDRPCInstallation implements RPCInstallation{
 
     @SuppressWarnings("unchecked")
     public <T> Set<Class<T>> getRetrofits() {
-        return retrofits.stream().map(l -> (Class<T>)l).collect(Collectors.toSet());
+        return retrofits.stream().map(l -> (Class<T>) l).collect(Collectors.toSet());
     }
 
     @SuppressWarnings("unchecked")
     public <T> Set<Class<T>> getRemotes() {
-        return remotes.stream().map(l -> (Class<T>)l).collect(Collectors.toSet());
+        return remotes.stream().map(l -> (Class<T>) l).collect(Collectors.toSet());
     }
 
-    public  Set<Class<?>> getServes() {
+    public Set<Class<?>> getServes() {
         return serves;
     }
 
@@ -78,16 +77,13 @@ public final class ELDRPCInstallation implements RPCInstallation{
         if (!service.isAnnotationPresent(BaseURL.class)) {
             throw new IllegalStateException(String.format("Service %s 缺少 @BaseURL 標註。", service.getName()));
         }
-        if (!service.isInterface()){
+        if (!service.isInterface()) {
             throw new IllegalStateException(String.format("Service %s 必須為 interface。", service.getName()));
         }
     }
 
     private void validateRemote(Class<?> service) throws IllegalStateException {
-        if (!service.isAnnotationPresent(RPCClient.class)) {
-            throw new IllegalStateException(String.format("Service %s 缺少 @RPCClient 標註。", service.getName()));
-        }
-        if (!service.isInterface()){
+        if (!service.isInterface()) {
             throw new IllegalStateException(String.format("Service %s 必須為 interface。", service.getName()));
         }
     }

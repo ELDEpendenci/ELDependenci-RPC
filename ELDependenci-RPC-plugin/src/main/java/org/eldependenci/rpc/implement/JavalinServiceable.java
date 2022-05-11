@@ -7,23 +7,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import io.javalin.Javalin;
-import io.javalin.http.Context;
 import io.javalin.plugin.json.JavalinJackson;
+import io.javalin.websocket.WsBinaryMessageContext;
+import io.javalin.websocket.WsContext;
+import io.javalin.websocket.WsMessageContext;
 import org.eldependenci.rpc.ELDependenciRPC;
 import org.eldependenci.rpc.JsonMapperFactory;
-import org.eldependenci.rpc.RPCConfig;
-import org.eldependenci.rpc.context.RPCError;
-import org.eldependenci.rpc.context.RPCPayload;
-import org.eldependenci.rpc.context.RPCResponse;
-import org.eldependenci.rpc.context.RPCResult;
+import org.eldependenci.rpc.config.RPCConfig;
+import org.eldependenci.rpc.context.*;
 import org.eldependenci.rpc.exception.ServiceException;
 import org.eldependenci.rpc.protocol.RPCServiceable;
 import org.eldependenci.rpc.protocol.ServiceHandler;
-import org.eldependenci.rpc.serve.ThrowableSupplier;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 @Singleton
 public final class JavalinServiceable implements RPCServiceable {
@@ -39,6 +39,10 @@ public final class JavalinServiceable implements RPCServiceable {
 
     @Inject
     private ELDependenciRPC plugin;
+
+
+    @Inject
+    private ScheduleService scheduleService;
 
 
     @Inject
@@ -78,141 +82,179 @@ public final class JavalinServiceable implements RPCServiceable {
             ws.onConnect(ctx -> logger.info("RPC Client connected: {0}", ctx.getSessionId()));
             ws.onClose(ctx -> logger.info("RPC Client disconnected: {0}", ctx.getSessionId()));
             ws.onError(ctx -> {
-                if (ctx.error() != null){
+                if (ctx.error() != null) {
                     logger.warn("RPC Client error: {0} => {1}", ctx.getSessionId(), ctx.error().getMessage());
                     logger.debug(ctx.error());
                 }
             });
 
             ws.onMessage(ctx -> {
-                var response = handleWSMessage(() -> ctx.messageAsClass(WSPayload.class), handler);
-                ctx.send(response);
+                handleWS(ctx, handler).whenComplete((v, e) -> {
+                    if (e != null) {
+                        logger.warn(e, "Error while handing message from {0}: {1}", ctx.getSessionId(), e.getMessage());
+                    }
+                });
 
             });
+
             ws.onBinaryMessage(ctx -> {
-                var response = handleWSMessage(() -> objectMapper.readValue(ctx.data(), WSPayload.class), handler);
-                ctx.send(response);
+                handleWS(ctx, handler).whenComplete((v, e) -> {
+                    if (e != null) {
+                        logger.warn(e, "Error while handing message from {0}: {1}", ctx.getSessionId(), e.getMessage());
+                    }
+                });
             });
 
         });
 
-        route.post("/{service}/{method}", ctx -> {
+        route.post("/rpc", ctx -> {
 
-            var serviceName = ctx.pathParam("service");
-            var methodName = ctx.pathParam("method");
+
+            RPCPayload rpcPayload = ctx.bodyAsClass(RPCPayload.class);
+
+            var methodName = rpcPayload.method();
+            var serviceName = rpcPayload.service();
 
             logger.debug("looking for method {0} in service {1}", methodName, serviceName);
 
-            HttpPayload httpPayload = ctx.bodyAsClass(HttpPayload.class);
+            try {
 
-            var rpcPayload = new RPCPayload(serviceName, methodName, httpPayload.parameters);
-            var async = handler.shouldCallAsync(rpcPayload);
+                var future = handlePayload(rpcPayload, handler);
+                ctx.future(future.thenApply(result -> new RPCResponse<>(rpcPayload.id(), result instanceof RPCError, result)));
 
-            logger.debug("method {0} in service {1} running async: {2}", methodName, serviceName, async);
-            logger.debug("received parameters: {0}", Arrays.toString(httpPayload.parameters));
-
-            if (async) {
-                ctx.future(CompletableFuture.supplyAsync(() -> {
-                    try {
-                       var o = handler.invokes(rpcPayload);
-                       return handler.finalizeType(o.result(), o.returnType());
-                    } catch (Exception e) {
-                        return e;
-                    }
-                }), (result) -> handleFutureResult(result, ctx, serviceName, methodName, handler));
-
-            } else {
-
-                var res = handler.invokes(rpcPayload);
-
-                if (res.result() instanceof ScheduleService.BukkitPromise<?> promise) {
-
-                    logger.debug("method {0} in service {1} is returning bukkit promise", methodName, serviceName);
-                    var future = new CompletableFuture<>();
-                    promise.thenRunAsync(re -> {
-                        var result = objectMapper.convertValue(re, Object.class);
-                        logger.debug("method {0} in service {1} returning result: {2}", methodName, serviceName, result);
-                        future.complete(result);
-
-                    }).joinWithCatch(future::completeExceptionally);
-
-                    ctx.future(future, (result) -> handleFutureResult(result, ctx, serviceName, methodName, handler));
-
-                } else {
-
-                    var result = handler.finalizeType(res.result(), res.returnType());
-                    var rpcResponse = new RPCResponse<>(true, new RPCResult(methodName, serviceName, result));
-                    logger.debug("method {0} in service {1} returning result: {2}", methodName, serviceName, result);
-                    ctx.status(200).json(rpcResponse);
-                }
-
+            } catch (Exception e) {
+                throw new RPCException(rpcPayload.id(), e);
             }
         });
 
         route.exception(Exception.class, (e, ctx) -> {
             var err = handler.toRPCError(e, ctx.queryParam("debug") != null);
-            var rpcResponse = new RPCResponse<>(false, err);
+            var rpcResponse = new RPCResponse<>(-1, false, err);
+            ctx.status(err.code()).json(rpcResponse);
+        });
+
+        route.wsException(Exception.class, (e, ctx) -> {
+            var err = handler.toRPCError(e, ctx.queryParam("debug") != null);
+            var rpcResponse = new RPCResponse<>(-1, false, err);
+            ctx.send(rpcResponse);
+        });
+
+        route.wsException(RPCException.class, (e, ctx) -> {
+            var err = handler.toRPCError(e.getReal(), ctx.queryParam("debug") != null);
+            var rpcResponse = new RPCResponse<>(e.getId(), false, err);
+            ctx.send(rpcResponse);
+        });
+
+        route.exception(RPCException.class, (e, ctx) -> {
+            var err = handler.toRPCError(e.getReal(), ctx.queryParam("debug") != null);
+            var rpcResponse = new RPCResponse<>(e.getId(), false, err);
             ctx.status(err.code()).json(rpcResponse);
         });
 
         Thread.currentThread().setContextClassLoader(classLoader);
     }
 
-    private RPCResponse<?> handleWSMessage(ThrowableSupplier<WSPayload> payloadGet, ServiceHandler handler) {
 
-        Object result;
+    private CompletableFuture<Void> handleWS(WsContext ctx, ServiceHandler handler) throws Exception {
+
+        RPCPayload rpcPayload;
+
+        if (ctx instanceof WsBinaryMessageContext bx) {
+            rpcPayload = objectMapper.readValue(bx.data(), RPCPayload.class);
+        } else if (ctx instanceof WsMessageContext mx) {
+            rpcPayload = mx.messageAsClass(RPCPayload.class);
+        } else {
+            throw new UnsupportedOperationException("unknown context: " + ctx);
+        }
+
+        logger.debug("looking for method {0} in service {1}", rpcPayload.method(), rpcPayload.service());
 
         try {
 
-            var wsPayload = payloadGet.get();
+            var future = handlePayload(rpcPayload, handler);
 
-            logger.debug("looking for method {0} in service {1}", wsPayload.method, wsPayload.service);
+            return future.thenAcceptAsync(result -> {
 
-            var returned = handler.invokes(new RPCPayload(wsPayload.service, wsPayload.method, wsPayload.parameters));
+                try {
 
-            result = handler.finalizeType(returned.result(), returned.returnType());
+                    var response = new RPCResponse<>(rpcPayload.id(), result instanceof RPCResult, result);
+
+                    if (ctx instanceof WsBinaryMessageContext bx) {
+                        var b = objectMapper.writeValueAsBytes(response);
+                        bx.send(ByteBuffer.wrap(b));
+                    } else {
+                        WsMessageContext mx = (WsMessageContext) ctx;
+                        var s = objectMapper.writeValueAsString(response);
+                        mx.send(s);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new CompletionException(e);
+                }
+            });
 
         } catch (Exception e) {
 
-            String[] errors = new String[0];
-
-            if (!(e instanceof ServiceException)) {
-                errors = Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new);
-                e.printStackTrace();
-            }
-
-            result = new RPCError(400, e.getMessage(), errors);
+            throw new RPCException(rpcPayload.id(), e);
         }
 
-        return new RPCResponse<>(!(result instanceof RPCError), result);
     }
 
-    private void handleFutureResult(Object result, Context ctx, String serviceName, String methodName, ServiceHandler handler) {
-        RPCResponse<?> content;
+    private CompletableFuture<Object> handlePayload(RPCPayload rpcPayload, ServiceHandler handler) throws Exception {
 
-        if (result instanceof Exception ex) {
-            var err  = handler.toRPCError(ex, ctx.queryParam("debug") != null);
-            content = new RPCResponse<>(false, err);
-        }else{
-            content = new RPCResponse<>(true, new RPCResult(methodName, serviceName, result));
+        var async = handler.shouldCallAsync(rpcPayload);
+
+        CompletableFuture<Object> future = async ? toFuture(rpcPayload, handler) : new CompletableFuture<>();
+
+        if (!async) {
+
+            var returned = handler.invokes(rpcPayload);
+
+            if (returned.result() instanceof ScheduleService.BukkitPromise<?> promise) {
+
+                logger.debug("method {0} in service {1} is returning bukkit promise", rpcPayload.method(), rpcPayload.service());
+
+                promise.thenRunAsync(re -> {
+
+                    var result = objectMapper.convertValue(re, Object.class);
+                    logger.debug("method {0} in service {1} returning result: {2}", rpcPayload.method(), rpcPayload.service(), result);
+                    future.complete(new RPCResult(rpcPayload.method(), rpcPayload.service(), result));
+
+                }).joinWithCatch(future::completeExceptionally);
+
+            } else {
+                future.complete(new RPCResult(rpcPayload.method(), rpcPayload.service(), handler.finalizeType(returned.result(), returned.returnType())));
+            }
         }
 
-        logger.debug("method {0} in service {1} returning result: {2}", methodName, serviceName, result);
-        ctx.status(200).json(content);
+        return future;
+    }
+
+    private CompletableFuture<Object> toFuture(RPCPayload rpcPayload, ServiceHandler handler) {
+        return CompletableFuture.supplyAsync(() -> {
+
+            try {
+                var returned = handler.invokes(rpcPayload);
+                return new RPCResult(rpcPayload.method(), rpcPayload.service(), handler.finalizeType(returned.result(), returned.returnType()));
+            } catch (Exception e) {
+                String[] errors = new String[0];
+
+                if (!(e instanceof ServiceException)) {
+                    errors = Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new);
+                    e.printStackTrace();
+                }
+
+                return new RPCError(400, e.getMessage(), errors);
+            }
+        });
     }
 
 
     @Override
-    public void StopService() {
+    public synchronized void StopService() {
         if (app != null) {
             app.close();
         }
-    }
-
-
-    public record HttpPayload(Object[] parameters) {
-    }
-
-    public record WSPayload(Object[] parameters, String method, String service){
     }
 }

@@ -31,8 +31,6 @@ jobs:
   upload_github_pkg:
     runs-on: ubuntu-latest
     needs: [ build ]
-    # 用於 上傳 maven pkg 到 github
-    if: ${{ false }}
     permissions:
       contents: read
       packages: write

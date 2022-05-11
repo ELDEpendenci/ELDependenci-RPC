@@ -1,6 +1,4 @@
-package org.eldependenci.rpc.remote;
-
-import org.eldependenci.rpc.protocol.ProtocolType;
+package org.eldependenci.rpc.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,12 +7,5 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RPCClient {
-
-    String host();
-
-    String protocol() default ProtocolType.HTTP;
-
-    boolean useTLS() default false;
-
+public @interface AuthorizationRequired {
 }

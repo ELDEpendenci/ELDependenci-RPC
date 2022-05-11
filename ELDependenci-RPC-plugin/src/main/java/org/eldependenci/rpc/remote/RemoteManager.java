@@ -2,6 +2,7 @@ package org.eldependenci.rpc.remote;
 
 import javax.inject.Inject;
 import java.lang.reflect.Proxy;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,6 +28,11 @@ public final class RemoteManager {
         );
         proxyMap.put(service, proxy);
         return (T) proxy;
+    }
+
+
+    public void preloadAllServices(List<Class<?>> services){
+        services.forEach(this::createService);
     }
 
 }

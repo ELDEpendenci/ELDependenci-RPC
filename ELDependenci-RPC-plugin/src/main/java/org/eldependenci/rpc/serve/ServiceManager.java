@@ -5,8 +5,8 @@ import com.ericlam.mc.eld.services.LoggingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.eldependenci.rpc.JsonMapperFactory;
+import org.eldependenci.rpc.annotation.DoAsync;
 import org.eldependenci.rpc.context.RPCError;
 import org.eldependenci.rpc.context.RPCPayload;
 import org.eldependenci.rpc.protocol.ServiceHandler;
@@ -77,7 +77,6 @@ public final class ServiceManager implements ServiceHandler {
             Parameter parameter = method.getParameters()[i];
             Object value = args[i];
             var javaType = mapper.getTypeFactory().constructType(parameter.getParameterizedType());
-            logger.debug("parsing {0} to {1}", value.getClass(), parameter.getParameterizedType());
             Object pass = mapper.convertValue(value, javaType);
             invokes[i] = pass;
         }
@@ -91,8 +90,6 @@ public final class ServiceManager implements ServiceHandler {
         if (!javaType.isTypeOrSuperTypeOf(returned.getClass())) {
             throw new ReturnTypeNotMatchedException(type.getTypeName(), returned.getClass().getName(), returned);
         }
-        logger.debug("belongs to ConfigurationSerializable: {0}", returned instanceof ConfigurationSerializable);
-        logger.debug("serializing {0} to {1}", returned.getClass(), type.getTypeName());
         return mapper.convertValue(returned, javaType);
     }
 

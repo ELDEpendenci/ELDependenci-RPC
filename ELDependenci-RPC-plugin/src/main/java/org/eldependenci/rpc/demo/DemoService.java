@@ -1,4 +1,4 @@
-package org.eldependenci.rpc.demo.serve;
+package org.eldependenci.rpc.demo;
 
 import com.ericlam.mc.eld.services.ItemStackService;
 import com.ericlam.mc.eld.services.ScheduleService;

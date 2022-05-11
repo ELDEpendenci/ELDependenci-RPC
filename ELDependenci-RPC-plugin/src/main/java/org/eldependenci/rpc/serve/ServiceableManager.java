@@ -4,6 +4,7 @@ import com.ericlam.mc.eld.services.ScheduleService;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import org.eldependenci.rpc.ELDependenciRPC;
+import org.eldependenci.rpc.config.RPCConfig;
 import org.eldependenci.rpc.protocol.RPCServiceable;
 import org.eldependenci.rpc.protocol.RPCProtocol;
 
@@ -25,9 +26,11 @@ public final class ServiceableManager {
     @Inject
     private ServiceManager serviceManager;
 
+
     @Inject
-    public ServiceableManager(@Named("eldrpc.protocols") Map<String, RPCProtocol> protocolMap, Injector injector) {
+    public ServiceableManager(RPCConfig config, @Named("eldrpc.protocols") Map<String, RPCProtocol> protocolMap, Injector injector) {
         protocolMap.forEach((name, protocol) -> {
+            if (!config.enabledProtocols.contains(name)) return;
             RPCServiceable serviceable = injector.getInstance(protocol.serviceClass());
             serviceableMap.put(name, serviceable);
         });

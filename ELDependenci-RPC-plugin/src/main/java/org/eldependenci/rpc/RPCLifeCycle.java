@@ -1,9 +1,9 @@
 package org.eldependenci.rpc;
 
 import com.ericlam.mc.eld.ELDLifeCycle;
-import com.ericlam.mc.eld.services.ScheduleService;
 import com.google.inject.Inject;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.eldependenci.rpc.config.RPCConfig;
 import org.eldependenci.rpc.serve.ServiceableManager;
 
 public class RPCLifeCycle implements ELDLifeCycle {
@@ -11,9 +11,6 @@ public class RPCLifeCycle implements ELDLifeCycle {
 
     @Inject
     private ServiceableManager serviceableManager;
-
-    @Inject
-    private ScheduleService scheduleService;
 
     @Inject
     private RPCConfig config;
@@ -33,10 +30,8 @@ public class RPCLifeCycle implements ELDLifeCycle {
 
     @Override
     public void onDisable(JavaPlugin javaPlugin) {
-        try {
-            serviceableManager.stopAllServices().block();
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
+        if (config.enabled) {
+            serviceableManager.stopAllServices().join();
         }
     }
 }

@@ -6,8 +6,9 @@ import com.ericlam.mc.eld.services.ScheduleService;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.eldependenci.rpc.ELDependenciRPC;
-import org.eldependenci.rpc.RPCConfig;
-import org.eldependenci.rpc.demo.remote.DemoService;
+import org.eldependenci.rpc.config.RPCConfig;
+import org.eldependenci.rpc.demo.DemoRemoteService;
+import org.eldependenci.rpc.demo.DemoService;
 import org.eldependenci.rpc.remote.RemoteManager;
 
 import javax.inject.Inject;
@@ -41,7 +42,7 @@ public class RPCTestCommand implements CommandNode {
             return;
         }
 
-        var demo = remoteManager.getRemoteService(DemoService.class);
+        var demo = remoteManager.getRemoteService(DemoRemoteService.class);
 
         scheduler.runAsync(plugin, () -> {
 
@@ -81,7 +82,7 @@ public class RPCTestCommand implements CommandNode {
 
             commandSender.sendMessage("testGeneric 返回: " + gen);
 
-            var author = new org.eldependenci.rpc.demo.serve.DemoService.Author();
+            var author = new DemoService.Author();
             author.name = commandSender.getName();
             author.age = 18;
 

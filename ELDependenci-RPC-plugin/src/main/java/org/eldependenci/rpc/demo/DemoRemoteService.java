@@ -1,15 +1,12 @@
-package org.eldependenci.rpc.demo.remote;
+package org.eldependenci.rpc.demo;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.eldependenci.rpc.remote.RPCClient;
-import org.eldependenci.rpc.retrofit.BaseURL;
 
 import java.util.List;
 
-@RPCClient(host = "localhost:8888")
-public interface DemoService {
+public interface DemoRemoteService {
 
     String sayHelloTo(String name);
 
@@ -27,5 +24,5 @@ public interface DemoService {
 
     List<String> testGeneric(List<Integer> list);
 
-    org.eldependenci.rpc.demo.serve.DemoService.Book getBookFromAuthor(org.eldependenci.rpc.demo.serve.DemoService.Author author);
+    DemoService.Book getBookFromAuthor(DemoService.Author author);
 }

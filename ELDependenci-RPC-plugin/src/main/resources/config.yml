@@ -1,4 +1,7 @@
 servePort: 8888
 asyncTimeout: 60000
-enabled: true
+enabled: false
 enableDemo: true
+enabledProtocols:
+  - HTTP
+  - WEB_SOCKET

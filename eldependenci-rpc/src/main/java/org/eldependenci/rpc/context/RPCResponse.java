@@ -1,4 +1,4 @@
 package org.eldependenci.rpc.context;
 
-public record RPCResponse<T>(boolean success, T result) {
+public record RPCResponse<T>(long id, boolean success, T result) {
 }
