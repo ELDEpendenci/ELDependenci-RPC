@@ -181,14 +181,14 @@ public class OkWebSocketRequester implements RPCRequester {
     private void handleResponse(RPCResponse<?> response) {
         if (response.success()) {
             var rpcResult = mapper.convertValue(response.result(), RPCResult.class);
-            Optional.ofNullable(this.callbackMap.get(response.id()))
+            Optional.ofNullable(this.callbackMap.remove(response.id()))
                     .ifPresentOrElse(
                             future -> future.accept(rpcResult.result()),
                             () -> logger.warn("No callback found for response {0}", response.id())
                     );
         } else {
             var err = mapper.convertValue(response.result(), RPCError.class);
-            Optional.ofNullable(this.callbackMap.get(response.id()))
+            Optional.ofNullable(this.callbackMap.remove(response.id()))
                     .ifPresentOrElse(
                             future -> future.accept(err),
                             () -> logger.warn("No callback found for response {0}", response.id())
