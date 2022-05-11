@@ -11,6 +11,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout Source Code
         id: checkout-source
@@ -20,8 +22,6 @@ jobs:
          java-version: 18
          body: 更新詳細請查看 [版本更新](https://eric2788.gitbook.io/eldependenci-rpc/references/version-update/v0.0.2)
          upload-module: './eldependenci-rpc-plugin'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Update javadocs'
         id: update-javadoc
         uses: eric2788/push-javadoc-branch@main
