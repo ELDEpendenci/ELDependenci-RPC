@@ -15,15 +15,13 @@ jobs:
       - name: Checkout Source Code
         id: checkout-source
         uses: actions/checkout@v2
-      - name: 'maven jar publish'
-        uses: eric2788/maven-jar-publish@master
+      - uses: eric2788/maven-jar-publish@v2
         with:
          java-version: 18
-         body: test
+         body: 更新詳細請查看 [版本更新](https://eric2788.gitbook.io/eldependenci-rpc/references/version-update/v0.0.2)
          upload-module: './eldependenci-rpc-plugin'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: 'Update javadocs'
         id: update-javadoc
         uses: eric2788/push-javadoc-branch@main
