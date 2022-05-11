@@ -6,7 +6,7 @@ name: Publish Process
 # ↓ 自動生成 下載檔案 及 javadoc
 on:
   push:
-    branches: [ test-action ]
+    branches: [ master ]
 
 jobs:
   build:
