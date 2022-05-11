@@ -2,7 +2,6 @@ package org.eldependenci.rpc.implement;
 
 import com.ericlam.mc.eld.misc.DebugLogger;
 import com.ericlam.mc.eld.services.LoggingService;
-import com.ericlam.mc.eld.services.ScheduleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -112,7 +111,7 @@ public final class JavalinServiceable implements RPCServiceable {
 
             try {
 
-                var future = handler.handlePayload(rpcPayload);
+                var future = handler.handlePayload(rpcPayload, ctx.queryParam("debug") != null);
                 ctx.future(future.thenApply(result -> new RPCResponse<>(rpcPayload.id(), result instanceof RPCError, result)));
 
             } catch (Exception e) {
@@ -164,7 +163,7 @@ public final class JavalinServiceable implements RPCServiceable {
 
         try {
 
-            var future = handler.handlePayload(rpcPayload);
+            var future = handler.handlePayload(rpcPayload, false);
 
             return future.thenAcceptAsync(result -> {
 

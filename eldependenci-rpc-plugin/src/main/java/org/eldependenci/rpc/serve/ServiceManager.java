@@ -104,11 +104,11 @@ public final class ServiceManager implements ServiceHandler {
     }
 
     @Override
-    public CompletableFuture<Object> handlePayload(RPCPayload rpcPayload) throws Exception {
+    public CompletableFuture<Object> handlePayload(RPCPayload rpcPayload, boolean debug) throws Exception {
 
         var async = shouldCallAsync(rpcPayload);
 
-        CompletableFuture<Object> future = async ? toFuture(rpcPayload) : new CompletableFuture<>();
+        CompletableFuture<Object> future = async ? toFuture(rpcPayload, debug) : new CompletableFuture<>();
 
         try {
             if (!async) {
@@ -132,37 +132,21 @@ public final class ServiceManager implements ServiceHandler {
                 }
             }
         } catch (Exception e){
-            String[] errors = new String[0];
-            int code = 400;
-            if (!(e instanceof ServiceException)) {
-                code = 500;
-                errors = Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new);
-                e.printStackTrace();
-            }
-            future.complete(new RPCError(code, e.getMessage(), errors));
+            future.complete(toRPCError(e, debug));
         }
 
         return future;
     }
 
     @Override
-    public CompletableFuture<Object> toFuture(RPCPayload rpcPayload) {
+    public CompletableFuture<Object> toFuture(RPCPayload rpcPayload, boolean debug) {
         return CompletableFuture.supplyAsync(() -> {
 
             try {
                 var returned = invokes(rpcPayload);
                 return new RPCResult(rpcPayload.method(), rpcPayload.service(), finalizeType(returned.result(), returned.returnType()));
             } catch (Exception e) {
-                int code = 400;
-                String[] errors = new String[0];
-
-                if (!(e instanceof ServiceException)) {
-                    code = 500;
-                    errors = Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new);
-                    e.printStackTrace();
-                }
-
-                return new RPCError(code, e.getMessage(), errors);
+                return toRPCError(e, debug);
             }
         });
     }
