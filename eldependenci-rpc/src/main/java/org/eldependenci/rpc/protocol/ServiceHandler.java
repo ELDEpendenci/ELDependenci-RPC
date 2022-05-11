@@ -13,8 +13,8 @@ public interface ServiceHandler {
 
     /**
      * 異步處理 payload
-     * <p />
-     * 此方式將包含使用 {@link #toFuture(RPCPayload)}, {@link #invokes(RPCPayload)} 和 {@link #finalizeType(Object, Type)},
+     * <p>
+     * 此方式將包含使用 {@link #toFuture(RPCPayload, boolean)}, {@link #invokes(RPCPayload)} 和 {@link #finalizeType(Object, Type)},
      * 且自帶 BukkitPromise 轉換功能
      * @param rpcPayload 請求資料
      * @param debug 是否啟用除錯, 若是，則會填入 {@link RPCError#errors() } 參數

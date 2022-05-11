@@ -19,9 +19,6 @@ public final class RemoteManager {
     @Inject
     private RequesterManager requestManager;
 
-    @Inject
-    private RPCConfig config;
-
     public <T> T getRemoteService(Class<T> service) {
         return (T) Optional.ofNullable(proxyMap.get(service)).orElseGet(() -> createService(service));
     }
@@ -39,7 +36,6 @@ public final class RemoteManager {
 
     public <T> T createServiceDynamically(Class<T> service, RPCInfo info) {
         var serviceName = Optional.ofNullable(info.serviceName()).orElse(service.getSimpleName());
-        var requester = requestManager.getRequesterDynamically(info);
         return (T) Proxy.newProxyInstance(
                 service.getClassLoader(),
                 new Class[]{service},
@@ -50,7 +46,7 @@ public final class RemoteManager {
                         args = args != null ? args : new String[0];
                         var id = System.nanoTime();
                         var payload = new RPCPayload(id, method.getName(), serviceName, args, info.authToken());
-                        var future = requester.offerRequest(payload);
+                        var future = requestManager.getRequesterDynamically(info).thenCompose(requester -> requester.offerRequest(payload));
                         return this.requestManager.handleFuture(future, method.getGenericReturnType());
                     }
                 }

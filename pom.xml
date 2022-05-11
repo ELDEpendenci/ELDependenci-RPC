@@ -141,6 +141,7 @@
                         </links>
                         <show>public</show>
                         <isOffline>false</isOffline>
+                        <failOnWarnings>false</failOnWarnings>
                         <linksource>true</linksource>
                         <encoding>UTF-8</encoding>
                         <windowtitle>ELDependenci-Addon</windowtitle>
@@ -150,7 +151,7 @@
                         <version>true</version>
                         <linksource>true</linksource>
                         <notimestamp>true</notimestamp>
-                        <bottom><![CDATA[<b>© ELDependenci - 2020</b>]]></bottom>
+                        <bottom><![CDATA[<b>© ELDependenci-RPC - 2022</b>]]></bottom>
                         <reportOutputDirectory>${project.build.directory}</reportOutputDirectory>
                         <outputDirectory>../javadocs</outputDirectory>
                         <detectJavaApiLink>true</detectJavaApiLink>
