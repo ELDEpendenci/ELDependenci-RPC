@@ -25,4 +25,6 @@ public interface DemoRemoteService {
     List<String> testGeneric(List<Integer> list);
 
     DemoService.Book getBookFromAuthor(DemoService.Author author);
+
+    void testVoidMethod(String say);
 }

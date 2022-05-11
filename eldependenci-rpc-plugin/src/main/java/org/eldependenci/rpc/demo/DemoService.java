@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.eldependenci.rpc.ELDependenciRPC;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -75,6 +76,10 @@ public class DemoService {
         b.name = String.format("%s's book", author.name);
         b.pages = author.age * 2;
         return b;
+    }
+
+    public void testVoidMethod(String say){
+        LoggerFactory.getLogger(DemoService.class).info(say);
     }
 
 

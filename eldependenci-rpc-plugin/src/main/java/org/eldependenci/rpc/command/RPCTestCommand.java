@@ -90,6 +90,10 @@ public class RPCTestCommand implements CommandNode {
 
             commandSender.sendMessage("getBookFromAuthor 返回: " + book);
 
+            demo.testVoidMethod("this is a void method test");
+
+            commandSender.sendMessage("testVoidMethod 執行完成");
+
 
         }).thenRunSync(v -> {
             commandSender.sendMessage("測試完成。");

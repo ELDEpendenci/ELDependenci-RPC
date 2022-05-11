@@ -100,7 +100,7 @@ public final class RequesterManager {
         var realFuture = future.thenApply(r -> {
 
             if (returnType == Void.TYPE) {
-                return Void.TYPE.cast(null);
+                return null;
             }
 
             return this.mapper.convertValue(r, jt);
