@@ -5,12 +5,18 @@ import com.ericlam.mc.eld.services.LoggingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import io.javalin.http.HttpResponseException;
+import org.eclipse.jetty.client.HttpRequestException;
 import org.eldependenci.rpc.JsonMapperFactory;
+import org.eldependenci.rpc.annotation.AuthorizationRequired;
 import org.eldependenci.rpc.annotation.DoAsync;
+import org.eldependenci.rpc.config.RPCConfig;
 import org.eldependenci.rpc.context.RPCError;
 import org.eldependenci.rpc.context.RPCPayload;
+import org.eldependenci.rpc.context.RPCUnauthorizedException;
 import org.eldependenci.rpc.protocol.ServiceHandler;
 import org.eldependenci.rpc.exception.*;
+import retrofit2.HttpException;
 
 import javax.inject.Named;
 import java.lang.reflect.Method;
@@ -30,6 +36,9 @@ public final class ServiceManager implements ServiceHandler {
     private final ObjectMapper mapper;
 
     private final DebugLogger logger;
+
+    @Inject
+    private RPCConfig config;
 
     @Inject
     public ServiceManager(
@@ -96,6 +105,14 @@ public final class ServiceManager implements ServiceHandler {
     @Override
     public Response invokes(RPCPayload payload) throws Exception {
         var service = getService(payload.service());
+
+        if (service.getClass().isAnnotationPresent(AuthorizationRequired.class)){
+            var token = Optional.ofNullable(config.token).map(s -> s.isBlank() ? null : s).orElseGet(() -> System.getenv("PRC_TOKEN"));
+            if (token == null || !token.equals(payload.token())){
+                throw new RPCUnauthorizedException(payload.id(), new HttpResponseException(401, "Unauthorized"));
+            }
+        }
+
         var method = getServiceMethod(service, payload.method());
         var args = method.getParameterCount() == 0 ? new Object[0] : payload.parameters();
         var returned = invokeServiceMethod(service, method, args);

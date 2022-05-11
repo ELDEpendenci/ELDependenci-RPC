@@ -1,11 +1,13 @@
 package org.eldependenci.rpc.remote;
 
+import org.eldependenci.rpc.config.RPCConfig;
 import org.eldependenci.rpc.context.RPCInfo;
 import org.eldependenci.rpc.context.RPCPayload;
 import org.eldependenci.rpc.protocol.RPCRequester;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.Optional;
 
 public class RemoteInvocationHandler implements InvocationHandler {
 
@@ -14,14 +16,17 @@ public class RemoteInvocationHandler implements InvocationHandler {
     private final RequesterManager requesterManager;
 
     private final String serviceName;
+    private final String token;
 
     public RemoteInvocationHandler(
             Class<?> service,
-            RequesterManager requesterManager
+            RequesterManager requesterManager,
+            RPCConfig config
     ) {
         this.requesterManager = requesterManager;
         this.requester = requesterManager.getRequester(service);
         this.serviceName = requesterManager.findInfo(service).map(RPCInfo::serviceName).orElse(service.getSimpleName());
+        this.token = Optional.ofNullable(config.token).map(s -> s.isBlank() ? null : s).orElseGet(() -> System.getenv("RPC_TOKEN"));
     }
 
     @Override
@@ -31,7 +36,7 @@ public class RemoteInvocationHandler implements InvocationHandler {
         } else {
             args = args != null ? args : new String[0];
             var id = System.nanoTime();
-            var payload = new RPCPayload(id, method.getName(), serviceName,  args);
+            var payload = new RPCPayload(id, method.getName(), serviceName,  args, token);
             var future = this.requester.offerRequest(payload);
             return requesterManager.handleFuture(future, method.getGenericReturnType());
         }

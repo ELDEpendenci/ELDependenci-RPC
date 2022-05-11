@@ -53,11 +53,21 @@ public final class RequesterManager {
         });
     }
 
-    public Optional<RPCInfo> findInfo(Class<?> service){
+    public Optional<RPCInfo> findInfo(Class<?> service) {
         return remoteConfig.remotes
                 .stream()
                 .filter(r -> r.locate().equals(service.getName()))
                 .findAny();
+    }
+
+    public RPCRequester getRequesterDynamically(RPCInfo info) {
+        var requester = this.requesterMap.get(info.protocol());
+        if (requester == null) {
+            throw new IllegalArgumentException("Protocol " + info.protocol() + " is not supported");
+        }
+        var ins = injector.getInstance(requester);
+        ins.initialize(info);
+        return ins;
     }
 
     public RPCRequester getRequester(Class<?> service) {
