@@ -12,16 +12,17 @@ public interface RPCRequester {
 
     /**
      * 初始化 請求接口 (基於 Remote 服務)
+     *
      * @param client RPC 資訊
+     * @return 異步初始化
      */
-    void initialize(RPCInfo client);
+    CompletableFuture<Void> initialize(RPCInfo client);
 
     /**
      * 執行 RPC 請求
      * @param payload RPC 請求內容協定
      * @return RPC 回應
-     * @throws Exception 請求錯誤
      */
-    CompletableFuture<Object> offerRequest(RPCPayload payload) throws Exception;
+    CompletableFuture<Object> offerRequest(RPCPayload payload);
 
 }

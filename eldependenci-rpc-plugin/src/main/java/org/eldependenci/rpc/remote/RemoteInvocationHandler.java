@@ -1,18 +1,16 @@
 package org.eldependenci.rpc.remote;
 
-import org.eldependenci.rpc.config.RPCConfig;
 import org.eldependenci.rpc.context.RPCInfo;
 import org.eldependenci.rpc.context.RPCPayload;
 import org.eldependenci.rpc.protocol.RPCRequester;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 public class RemoteInvocationHandler implements InvocationHandler {
 
-    private final RPCRequester requester;
-
+    private final Class<?> service;
     private final RequesterManager requesterManager;
 
     private final String serviceName;
@@ -23,7 +21,7 @@ public class RemoteInvocationHandler implements InvocationHandler {
             RequesterManager requesterManager
     ) {
         this.requesterManager = requesterManager;
-        this.requester = requesterManager.getRequester(service);
+        this.service = service;
         var rpcInfo = requesterManager.findInfo(service);
         this.serviceName = rpcInfo.map(RPCInfo::serviceName).orElse(service.getSimpleName());
         this.token = rpcInfo.map(RPCInfo::authToken).orElse("");
@@ -36,8 +34,9 @@ public class RemoteInvocationHandler implements InvocationHandler {
         } else {
             args = args != null ? args : new String[0];
             var id = System.nanoTime();
-            var payload = new RPCPayload(id, method.getName(), serviceName,  args, token);
-            var future = this.requester.offerRequest(payload);
+            var payload = new RPCPayload(id, method.getName(), serviceName, args, token);
+
+            var future = requesterManager.getRequester(service).thenCompose(requester -> requester.offerRequest(payload));
             return requesterManager.handleFuture(future, method.getGenericReturnType());
         }
     }

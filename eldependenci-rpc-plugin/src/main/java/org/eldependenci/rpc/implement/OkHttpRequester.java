@@ -11,8 +11,6 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nullable;
 import javax.inject.Named;
 import java.io.IOException;
-import java.net.ConnectException;
-import java.net.http.HttpTimeoutException;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -32,11 +30,12 @@ public final class OkHttpRequester implements RPCRequester {
     private @Nullable String serviceName;
 
     @Override
-    public void initialize(RPCInfo client) {
+    public CompletableFuture<Void> initialize(RPCInfo client) {
         this.serviceName = client.serviceName();
         this.hosts = client.fallbackHosts();
         // insert main host as first
         this.hosts.add(0, new RPCInfo.FallbackHost(client.host(), client.useTLS(), client.authToken()));
+        return CompletableFuture.completedFuture(null);
     }
 
     public Object invokeRequest(RPCPayload payload, RPCInfo.FallbackHost host) throws Exception {
@@ -69,7 +68,7 @@ public final class OkHttpRequester implements RPCRequester {
 
 
     @Override
-    public CompletableFuture<Object> offerRequest(RPCPayload payload) throws Exception {
+    public CompletableFuture<Object> offerRequest(RPCPayload payload) {
         CompletableFuture<Object> future = new CompletableFuture<>();
 
         for (RPCInfo.FallbackHost host : this.hosts) {

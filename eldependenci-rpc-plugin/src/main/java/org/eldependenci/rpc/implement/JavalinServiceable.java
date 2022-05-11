@@ -2,7 +2,6 @@ package org.eldependenci.rpc.implement;
 
 import com.ericlam.mc.eld.misc.DebugLogger;
 import com.ericlam.mc.eld.services.LoggingService;
-import com.ericlam.mc.eld.services.ScheduleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -15,12 +14,10 @@ import org.eldependenci.rpc.ELDependenciRPC;
 import org.eldependenci.rpc.JsonMapperFactory;
 import org.eldependenci.rpc.config.RPCConfig;
 import org.eldependenci.rpc.context.*;
-import org.eldependenci.rpc.exception.ServiceException;
 import org.eldependenci.rpc.protocol.RPCServiceable;
 import org.eldependenci.rpc.protocol.ServiceHandler;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -39,11 +36,6 @@ public final class JavalinServiceable implements RPCServiceable {
 
     @Inject
     private ELDependenciRPC plugin;
-
-
-    @Inject
-    private ScheduleService scheduleService;
-
 
     @Inject
     public JavalinServiceable(LoggingService loggingService, JsonMapperFactory factory) {
@@ -119,7 +111,7 @@ public final class JavalinServiceable implements RPCServiceable {
 
             try {
 
-                var future = handlePayload(rpcPayload, handler);
+                var future = handler.handlePayload(rpcPayload, ctx.queryParam("debug") != null);
                 ctx.future(future.thenApply(result -> new RPCResponse<>(rpcPayload.id(), result instanceof RPCError, result)));
 
             } catch (Exception e) {
@@ -171,7 +163,7 @@ public final class JavalinServiceable implements RPCServiceable {
 
         try {
 
-            var future = handlePayload(rpcPayload, handler);
+            var future = handler.handlePayload(rpcPayload, false);
 
             return future.thenAcceptAsync(result -> {
 
@@ -199,55 +191,6 @@ public final class JavalinServiceable implements RPCServiceable {
             throw new RPCException(rpcPayload.id(), e);
         }
 
-    }
-
-    private CompletableFuture<Object> handlePayload(RPCPayload rpcPayload, ServiceHandler handler) throws Exception {
-
-        var async = handler.shouldCallAsync(rpcPayload);
-
-        CompletableFuture<Object> future = async ? toFuture(rpcPayload, handler) : new CompletableFuture<>();
-
-        if (!async) {
-
-            var returned = handler.invokes(rpcPayload);
-
-            if (returned.result() instanceof ScheduleService.BukkitPromise<?> promise) {
-
-                logger.debug("method {0} in service {1} is returning bukkit promise", rpcPayload.method(), rpcPayload.service());
-
-                promise.thenRunAsync(re -> {
-
-                    var result = objectMapper.convertValue(re, Object.class);
-                    logger.debug("method {0} in service {1} returning result: {2}", rpcPayload.method(), rpcPayload.service(), result);
-                    future.complete(new RPCResult(rpcPayload.method(), rpcPayload.service(), result));
-
-                }).joinWithCatch(future::completeExceptionally);
-
-            } else {
-                future.complete(new RPCResult(rpcPayload.method(), rpcPayload.service(), handler.finalizeType(returned.result(), returned.returnType())));
-            }
-        }
-
-        return future;
-    }
-
-    private CompletableFuture<Object> toFuture(RPCPayload rpcPayload, ServiceHandler handler) {
-        return CompletableFuture.supplyAsync(() -> {
-
-            try {
-                var returned = handler.invokes(rpcPayload);
-                return new RPCResult(rpcPayload.method(), rpcPayload.service(), handler.finalizeType(returned.result(), returned.returnType()));
-            } catch (Exception e) {
-                String[] errors = new String[0];
-
-                if (!(e instanceof ServiceException)) {
-                    errors = Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new);
-                    e.printStackTrace();
-                }
-
-                return new RPCError(400, e.getMessage(), errors);
-            }
-        });
     }
 
 

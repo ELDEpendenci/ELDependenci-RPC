@@ -2,21 +2,21 @@ package org.eldependenci.rpc.serve;
 
 import com.ericlam.mc.eld.misc.DebugLogger;
 import com.ericlam.mc.eld.services.LoggingService;
+import com.ericlam.mc.eld.services.ScheduleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import io.javalin.http.HttpResponseException;
-import org.eclipse.jetty.client.HttpRequestException;
 import org.eldependenci.rpc.JsonMapperFactory;
 import org.eldependenci.rpc.annotation.AuthorizationRequired;
 import org.eldependenci.rpc.annotation.DoAsync;
 import org.eldependenci.rpc.config.RPCConfig;
 import org.eldependenci.rpc.context.RPCError;
 import org.eldependenci.rpc.context.RPCPayload;
+import org.eldependenci.rpc.context.RPCResult;
 import org.eldependenci.rpc.context.RPCUnauthorizedException;
 import org.eldependenci.rpc.protocol.ServiceHandler;
 import org.eldependenci.rpc.exception.*;
-import retrofit2.HttpException;
 
 import javax.inject.Named;
 import java.lang.reflect.Method;
@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class ServiceManager implements ServiceHandler {
@@ -100,6 +101,54 @@ public final class ServiceManager implements ServiceHandler {
             throw new ReturnTypeNotMatchedException(type.getTypeName(), returned.getClass().getName(), returned);
         }
         return mapper.convertValue(returned, javaType);
+    }
+
+    @Override
+    public CompletableFuture<Object> handlePayload(RPCPayload rpcPayload, boolean debug) throws Exception {
+
+        var async = shouldCallAsync(rpcPayload);
+
+        CompletableFuture<Object> future = async ? toFuture(rpcPayload, debug) : new CompletableFuture<>();
+
+        try {
+            if (!async) {
+
+                var returned = invokes(rpcPayload);
+
+                if (returned.result() instanceof ScheduleService.BukkitPromise<?> promise) {
+
+                    logger.debug("method {0} in service {1} is returning bukkit promise", rpcPayload.method(), rpcPayload.service());
+
+                    promise.thenRunAsync(re -> {
+
+                        var result = mapper.convertValue(re, Object.class);
+                        logger.debug("method {0} in service {1} returning result: {2}", rpcPayload.method(), rpcPayload.service(), result);
+                        future.complete(new RPCResult(rpcPayload.method(), rpcPayload.service(), result));
+
+                    }).joinWithCatch(future::completeExceptionally);
+
+                } else {
+                    future.complete(new RPCResult(rpcPayload.method(), rpcPayload.service(), finalizeType(returned.result(), returned.returnType())));
+                }
+            }
+        } catch (Exception e){
+            future.complete(toRPCError(e, debug));
+        }
+
+        return future;
+    }
+
+    @Override
+    public CompletableFuture<Object> toFuture(RPCPayload rpcPayload, boolean debug) {
+        return CompletableFuture.supplyAsync(() -> {
+
+            try {
+                var returned = invokes(rpcPayload);
+                return new RPCResult(rpcPayload.method(), rpcPayload.service(), finalizeType(returned.result(), returned.returnType()));
+            } catch (Exception e) {
+                return toRPCError(e, debug);
+            }
+        });
     }
 
     @Override

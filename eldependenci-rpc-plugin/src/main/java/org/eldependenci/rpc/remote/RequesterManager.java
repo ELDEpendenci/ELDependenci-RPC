@@ -60,17 +60,16 @@ public final class RequesterManager {
                 .findAny();
     }
 
-    public RPCRequester getRequesterDynamically(RPCInfo info) {
+    public CompletableFuture<RPCRequester> getRequesterDynamically(RPCInfo info) {
         var requester = this.requesterMap.get(info.protocol());
         if (requester == null) {
             throw new IllegalArgumentException("Protocol " + info.protocol() + " is not supported");
         }
         var ins = injector.getInstance(requester);
-        ins.initialize(info);
-        return ins;
+        return ins.initialize(info).thenApply(v -> ins);
     }
 
-    public RPCRequester getRequester(Class<?> service) {
+    public CompletableFuture<RPCRequester> getRequester(Class<?> service) {
 
         var info = findInfo(service).orElseThrow(() -> new IllegalStateException("Can't find remote config for " + service.getName() + ", have you defined it on remotes.yml?"));
 
@@ -80,12 +79,17 @@ public final class RequesterManager {
         if (instances == null) {
             throw new IllegalArgumentException("Protocol " + protocol + " is not supported");
         }
-        return Optional.ofNullable(instances.get(service)).orElseGet(() -> {
-            var requester = this.requesterMap.get(protocol);
-            var ins = injector.getInstance(requester);
-            ins.initialize(info);
-            instances.put(service, ins);
-            return ins;
+
+        var ins = instances.get(service);
+        if (ins != null){
+            return CompletableFuture.completedFuture(ins);
+        }
+
+        var requester = this.requesterMap.get(protocol);
+        var newIns = injector.getInstance(requester);
+        return newIns.initialize(info).thenApply(v -> {
+            instances.put(service, newIns);
+            return newIns;
         });
     }
 

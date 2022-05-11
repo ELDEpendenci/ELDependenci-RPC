@@ -6,7 +6,7 @@ package org.eldependenci.rpc.context;
 public class RPCUnauthorizedException extends RPCException {
 
     /**
-     *
+     * 認證 token 授權錯誤
      * @param id 追蹤 ID
      * @param e 原本錯誤
      */

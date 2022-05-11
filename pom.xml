@@ -7,7 +7,7 @@
     <groupId>org.eldependenci</groupId>
     <artifactId>eldependenci-rpc-module</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <modules>
         <module>eldependenci-rpc</module>
         <module>eldependenci-rpc-plugin</module>
@@ -141,6 +141,7 @@
                         </links>
                         <show>public</show>
                         <isOffline>false</isOffline>
+                        <failOnWarnings>false</failOnWarnings>
                         <linksource>true</linksource>
                         <encoding>UTF-8</encoding>
                         <windowtitle>ELDependenci-Addon</windowtitle>
@@ -150,7 +151,7 @@
                         <version>true</version>
                         <linksource>true</linksource>
                         <notimestamp>true</notimestamp>
-                        <bottom><![CDATA[<b>© ELDependenci - 2020</b>]]></bottom>
+                        <bottom><![CDATA[<b>© ELDependenci-RPC - 2022</b>]]></bottom>
                         <reportOutputDirectory>${project.build.directory}</reportOutputDirectory>
                         <outputDirectory>../javadocs</outputDirectory>
                         <detectJavaApiLink>true</detectJavaApiLink>
@@ -199,7 +200,7 @@
         <repository>
             <id>github</id>
             <name>Github ELDependenci Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/ELDependenci/eldependenci/eldependenci-rpc</url>
+            <url>https://maven.pkg.github.com/ELDependenci/eldependenci-rpc</url>
             <uniqueVersion>false</uniqueVersion>
         </repository>
     </distributionManagement>

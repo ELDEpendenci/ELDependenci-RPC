@@ -7,7 +7,6 @@ import com.google.inject.Inject;
 import okhttp3.*;
 import okhttp3.internal.ws.RealWebSocket;
 import okio.ByteString;
-import org.bukkit.Bukkit;
 import org.eldependenci.rpc.context.*;
 import org.eldependenci.rpc.protocol.RPCRequester;
 
@@ -20,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -55,21 +53,13 @@ public class OkWebSocketRequester implements RPCRequester {
     private RPCInfo info;
 
     @Override
-    public void initialize(RPCInfo client) {
+    public CompletableFuture<Void> initialize(RPCInfo client) {
         this.info = client;
         this.serviceName = client.serviceName();
         this.hosts = client.fallbackHosts();
         hosts.add(new RPCInfo.FallbackHost(client.host(), client.useTLS(), client.authToken()));
-        /*
-        launchWebSockets(iterator, client.locate()).whenComplete((v, ex) -> {
-            if (ex != null) {
-                logger.warn(ex, "Error while launching service {0}: {1}", client.locate(), ex.getMessage());
-            }
-        });
-
-         */
-
         httpClient.connectionPool().evictAll();
+        return launchWebSockets(hosts.iterator(), client.locate());
     }
 
 
@@ -162,7 +152,7 @@ public class OkWebSocketRequester implements RPCRequester {
     }
 
     @Override
-    public CompletableFuture<Object> offerRequest(RPCPayload payload) throws Exception {
+    public CompletableFuture<Object> offerRequest(RPCPayload payload)  {
         var previousFuture = webSocket == null ? launchWebSockets(hosts.iterator(), info.locate()).thenApply(v -> null) : CompletableFuture.completedFuture(null);
         return previousFuture.thenCompose(v -> {
             var future = new CompletableFuture<Object>();
