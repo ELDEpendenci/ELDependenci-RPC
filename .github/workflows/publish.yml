@@ -22,6 +22,9 @@ jobs:
          pre-release: true
          body: test
          upload-module: './eldependenci-rpc-plugin'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: 'Update javadocs'
         id: update-javadoc
         uses: eric2788/push-javadoc-branch@main
