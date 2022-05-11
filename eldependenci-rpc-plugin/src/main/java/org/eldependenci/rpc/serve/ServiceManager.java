@@ -110,25 +110,36 @@ public final class ServiceManager implements ServiceHandler {
 
         CompletableFuture<Object> future = async ? toFuture(rpcPayload) : new CompletableFuture<>();
 
-        if (!async) {
+        try {
+            if (!async) {
 
-            var returned = invokes(rpcPayload);
+                var returned = invokes(rpcPayload);
 
-            if (returned.result() instanceof ScheduleService.BukkitPromise<?> promise) {
+                if (returned.result() instanceof ScheduleService.BukkitPromise<?> promise) {
 
-                logger.debug("method {0} in service {1} is returning bukkit promise", rpcPayload.method(), rpcPayload.service());
+                    logger.debug("method {0} in service {1} is returning bukkit promise", rpcPayload.method(), rpcPayload.service());
 
-                promise.thenRunAsync(re -> {
+                    promise.thenRunAsync(re -> {
 
-                    var result = mapper.convertValue(re, Object.class);
-                    logger.debug("method {0} in service {1} returning result: {2}", rpcPayload.method(), rpcPayload.service(), result);
-                    future.complete(new RPCResult(rpcPayload.method(), rpcPayload.service(), result));
+                        var result = mapper.convertValue(re, Object.class);
+                        logger.debug("method {0} in service {1} returning result: {2}", rpcPayload.method(), rpcPayload.service(), result);
+                        future.complete(new RPCResult(rpcPayload.method(), rpcPayload.service(), result));
 
-                }).joinWithCatch(future::completeExceptionally);
+                    }).joinWithCatch(future::completeExceptionally);
 
-            } else {
-                future.complete(new RPCResult(rpcPayload.method(), rpcPayload.service(), finalizeType(returned.result(), returned.returnType())));
+                } else {
+                    future.complete(new RPCResult(rpcPayload.method(), rpcPayload.service(), finalizeType(returned.result(), returned.returnType())));
+                }
             }
+        } catch (Exception e){
+            String[] errors = new String[0];
+            int code = 400;
+            if (!(e instanceof ServiceException)) {
+                code = 500;
+                errors = Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new);
+                e.printStackTrace();
+            }
+            future.complete(new RPCError(code, e.getMessage(), errors));
         }
 
         return future;
@@ -142,14 +153,16 @@ public final class ServiceManager implements ServiceHandler {
                 var returned = invokes(rpcPayload);
                 return new RPCResult(rpcPayload.method(), rpcPayload.service(), finalizeType(returned.result(), returned.returnType()));
             } catch (Exception e) {
+                int code = 400;
                 String[] errors = new String[0];
 
                 if (!(e instanceof ServiceException)) {
+                    code = 500;
                     errors = Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).toArray(String[]::new);
                     e.printStackTrace();
                 }
 
-                return new RPCError(400, e.getMessage(), errors);
+                return new RPCError(code, e.getMessage(), errors);
             }
         });
     }
