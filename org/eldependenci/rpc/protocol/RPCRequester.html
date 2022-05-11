@@ -92,7 +92,8 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <hr>
-<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/protocol/RPCRequester.html#line-8">RPCRequester</a></span></div>
+<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/protocol/RPCRequester.html#line-11">RPCRequester</a></span></div>
+<div class="block">用於定義 新協定 (Protocol) 的 RPC 請求接口</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -109,10 +110,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#initialize(org.eldependenci.rpc.context.RPCInfo)" class="member-name-link">initialize</a><wbr>(<a href="../context/RPCInfo.html" title="class in org.eldependenci.rpc.context">RPCInfo</a>&nbsp;client)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">初始化 請求接口 (基於 Remote 服務)</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#offerRequest(org.eldependenci.rpc.context.RPCPayload)" class="member-name-link">offerRequest</a><wbr>(<a href="../context/RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;payload)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">執行 RPC 請求</div>
+</div>
 </div>
 </div>
 </div>
@@ -130,17 +135,27 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="initialize(org.eldependenci.rpc.context.RPCInfo)">
 <h3>initialize</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/protocol/RPCRequester.html#line-10">initialize</a></span><wbr><span class="parameters">(<a href="../context/RPCInfo.html" title="class in org.eldependenci.rpc.context">RPCInfo</a>&nbsp;client)</span></div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/protocol/RPCRequester.html#line-17">initialize</a></span><wbr><span class="parameters">(<a href="../context/RPCInfo.html" title="class in org.eldependenci.rpc.context">RPCInfo</a>&nbsp;client)</span></div>
+<div class="block">初始化 請求接口 (基於 Remote 服務)</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>client</code> - RPC 資訊</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="offerRequest(org.eldependenci.rpc.context.RPCPayload)">
 <h3>offerRequest</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/protocol/RPCRequester.html#line-12">offerRequest</a></span><wbr><span class="parameters">(<a href="../context/RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;payload)</span>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/protocol/RPCRequester.html#line-25">offerRequest</a></span><wbr><span class="parameters">(<a href="../context/RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;payload)</span>
                                 throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></span></div>
+<div class="block">執行 RPC 請求</div>
 <dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>payload</code> - RPC 請求內容協定</dd>
+<dt>Returns:</dt>
+<dd>RPC 回應</dd>
 <dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></code> - 請求錯誤</dd>
 </dl>
 </section>
 </li>

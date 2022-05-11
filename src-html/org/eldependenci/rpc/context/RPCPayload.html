@@ -15,12 +15,20 @@
 <span class="source-line-no">002</span><span id="line-2"></span>
 <span class="source-line-no">003</span><span id="line-3">import javax.annotation.Nullable;</span>
 <span class="source-line-no">004</span><span id="line-4"></span>
-<span class="source-line-no">005</span><span id="line-5">public record RPCPayload(long id, String method, String service, Object[] parameters, @Nullable String token) {</span>
-<span class="source-line-no">006</span><span id="line-6">    public RPCPayload copyWithDiffToken(@Nullable String token) {</span>
-<span class="source-line-no">007</span><span id="line-7">        return new RPCPayload(id, method, service, parameters, token);</span>
-<span class="source-line-no">008</span><span id="line-8">    }</span>
-<span class="source-line-no">009</span><span id="line-9"></span>
-<span class="source-line-no">010</span><span id="line-10">}</span>
+<span class="source-line-no">005</span><span id="line-5">/**</span>
+<span class="source-line-no">006</span><span id="line-6"> * RPC 傳入內容協定</span>
+<span class="source-line-no">007</span><span id="line-7"> * @param id 追蹤 ID</span>
+<span class="source-line-no">008</span><span id="line-8"> * @param method 方法名稱</span>
+<span class="source-line-no">009</span><span id="line-9"> * @param service 服務名稱</span>
+<span class="source-line-no">010</span><span id="line-10"> * @param parameters 參數</span>
+<span class="source-line-no">011</span><span id="line-11"> * @param token 認證 Token (由 {@link RPCInfo} 傳入)</span>
+<span class="source-line-no">012</span><span id="line-12"> */</span>
+<span class="source-line-no">013</span><span id="line-13">public record RPCPayload(long id, String method, String service, Object[] parameters, @Nullable String token) {</span>
+<span class="source-line-no">014</span><span id="line-14">    public RPCPayload copyWithDiffToken(@Nullable String token) {</span>
+<span class="source-line-no">015</span><span id="line-15">        return new RPCPayload(id, method, service, parameters, token);</span>
+<span class="source-line-no">016</span><span id="line-16">    }</span>
+<span class="source-line-no">017</span><span id="line-17"></span>
+<span class="source-line-no">018</span><span id="line-18">}</span>
 
 
 

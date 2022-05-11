@@ -18,10 +18,13 @@
 <span class="source-line-no">005</span><span id="line-5">import java.lang.annotation.RetentionPolicy;</span>
 <span class="source-line-no">006</span><span id="line-6">import java.lang.annotation.Target;</span>
 <span class="source-line-no">007</span><span id="line-7"></span>
-<span class="source-line-no">008</span><span id="line-8">@Target(ElementType.TYPE)</span>
-<span class="source-line-no">009</span><span id="line-9">@Retention(RetentionPolicy.RUNTIME)</span>
-<span class="source-line-no">010</span><span id="line-10">public @interface AuthorizationRequired {</span>
-<span class="source-line-no">011</span><span id="line-11">}</span>
+<span class="source-line-no">008</span><span id="line-8">/**</span>
+<span class="source-line-no">009</span><span id="line-9"> * 啟用授權請求 (僅限 Serve 服務)</span>
+<span class="source-line-no">010</span><span id="line-10"> */</span>
+<span class="source-line-no">011</span><span id="line-11">@Target(ElementType.TYPE)</span>
+<span class="source-line-no">012</span><span id="line-12">@Retention(RetentionPolicy.RUNTIME)</span>
+<span class="source-line-no">013</span><span id="line-13">public @interface AuthorizationRequired {</span>
+<span class="source-line-no">014</span><span id="line-14">}</span>
 
 
 

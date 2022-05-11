@@ -104,11 +104,12 @@ loadScripts(document, 'script');</script>
 <dd><code><span id="param-serviceName">serviceName</span></code> - 遠端服務名稱, 如無則使用 Service Class 作為名稱</dd>
 <dd><code><span id="param-useTLS">useTLS</span></code> - 是否使用 TLS</dd>
 <dd><code><span id="param-fallbackHosts">fallbackHosts</span></code> - 後備位址</dd>
+<dd><code><span id="param-authToken">authToken</span></code> - 認證 Token (如果該 Serve 類別啟用了授權請求，則必須指定)</dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public record </span><span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-15">RPCInfo</a></span>(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;locate, <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;host, <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;protocol, @Nullable <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName, boolean&nbsp;useTLS, @Nullable <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;authToken, <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RPCInfo.FallbackHost.html" title="class in org.eldependenci.rpc.context">RPCInfo.FallbackHost</a>&gt;&nbsp;fallbackHosts)
+<div class="type-signature"><span class="modifiers">public record </span><span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-16">RPCInfo</a></span>(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;locate, <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;host, <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;protocol, @Nullable <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName, boolean&nbsp;useTLS, @Nullable <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;authToken, <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RPCInfo.FallbackHost.html" title="class in org.eldependenci.rpc.context">RPCInfo.FallbackHost</a>&gt;&nbsp;fallbackHosts)
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">Record</a></span></div>
-<div class="block">RPC 遠端資訊</div>
+<div class="block">RPC 遠端資訊, 認證 token 將在 Serve 服務啟用 <a href="../annotation/AuthorizationRequired.html" title="annotation interface in org.eldependenci.rpc.annotation"><code>AuthorizationRequired</code></a> 的時候使用</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -123,7 +124,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static final record&nbsp;</code></div>
 <div class="col-second even-row-color"><code><a href="RPCInfo.FallbackHost.html" class="type-name-link" title="class in org.eldependenci.rpc.context">RPCInfo.FallbackHost</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">後備位址</div>
+</div>
 </div>
 </section>
 </li>
@@ -162,7 +165,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#authToken()" class="member-name-link">authToken</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the value of the <code>authToken</code> record component.</div>
+<div class="block">Returns the value of the <a href="#param-authToken"><code>authToken</code></a> record component.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</code></div>
@@ -229,7 +232,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,java.lang.String,java.util.List)">
 <h3>RPCInfo</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-15">RPCInfo</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;locate,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-16">RPCInfo</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;locate,
  <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;host,
  <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;protocol,
  @Nullable
@@ -246,7 +249,7 @@ loadScripts(document, 'script');</script>
 <dd><code>protocol</code> - the value for the <a href="#param-protocol"><code>protocol</code></a> record component</dd>
 <dd><code>serviceName</code> - the value for the <a href="#param-serviceName"><code>serviceName</code></a> record component</dd>
 <dd><code>useTLS</code> - the value for the <a href="#param-useTLS"><code>useTLS</code></a> record component</dd>
-<dd><code>authToken</code> - the value for the <code>authToken</code> record component</dd>
+<dd><code>authToken</code> - the value for the <a href="#param-authToken"><code>authToken</code></a> record component</dd>
 <dd><code>fallbackHosts</code> - the value for the <a href="#param-fallbackHosts"><code>fallbackHosts</code></a> record component</dd>
 </dl>
 </section>
@@ -262,7 +265,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="toString()">
 <h3>toString</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-15">toString</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-16">toString</a></span>()</div>
 <div class="block">Returns a string representation of this record class. The representation contains the name of the class, followed by the name and value of each of the record components.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -275,7 +278,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="hashCode()">
 <h3>hashCode</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-15">hashCode</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-16">hashCode</a></span>()</div>
 <div class="block">Returns a hash code value for this object. The value is derived from the hash code of each of the record components.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -288,7 +291,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="equals(java.lang.Object)">
 <h3>equals</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-15">equals</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-16">equals</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</span></div>
 <div class="block">Indicates whether some other object is "equal to" this one. The objects are equal if the other object is of the same class and if all the record components are equal. Reference components are compared with <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/Objects.html#equals(java.lang.Object,java.lang.Object)" title="class or interface in java.util" class="external-link"><code>Objects::equals(Object,Object)</code></a>; primitive components are compared with '=='.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -303,7 +306,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="locate()">
 <h3>locate</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-15">locate</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-16">locate</a></span>()</div>
 <div class="block">Returns the value of the <a href="#param-locate"><code>locate</code></a> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -314,7 +317,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="host()">
 <h3>host</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-15">host</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-16">host</a></span>()</div>
 <div class="block">Returns the value of the <a href="#param-host"><code>host</code></a> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -325,7 +328,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="protocol()">
 <h3>protocol</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-15">protocol</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-16">protocol</a></span>()</div>
 <div class="block">Returns the value of the <a href="#param-protocol"><code>protocol</code></a> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -337,7 +340,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="serviceName()">
 <h3>serviceName</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-15">serviceName</a></span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-16">serviceName</a></span>()</div>
 <div class="block">Returns the value of the <a href="#param-serviceName"><code>serviceName</code></a> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -348,7 +351,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="useTLS()">
 <h3>useTLS</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-15">useTLS</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-16">useTLS</a></span>()</div>
 <div class="block">Returns the value of the <a href="#param-useTLS"><code>useTLS</code></a> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -360,18 +363,18 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="authToken()">
 <h3>authToken</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-15">authToken</a></span>()</div>
-<div class="block">Returns the value of the <code>authToken</code> record component.</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-16">authToken</a></span>()</div>
+<div class="block">Returns the value of the <a href="#param-authToken"><code>authToken</code></a> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>the value of the <code>authToken</code> record component</dd>
+<dd>the value of the <a href="#param-authToken"><code>authToken</code></a> record component</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="fallbackHosts()">
 <h3>fallbackHosts</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RPCInfo.FallbackHost.html" title="class in org.eldependenci.rpc.context">RPCInfo.FallbackHost</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-15">fallbackHosts</a></span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="RPCInfo.FallbackHost.html" title="class in org.eldependenci.rpc.context">RPCInfo.FallbackHost</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/context/RPCInfo.html#line-16">fallbackHosts</a></span>()</div>
 <div class="block">Returns the value of the <a href="#param-fallbackHosts"><code>fallbackHosts</code></a> record component.</div>
 <dl class="notes">
 <dt>Returns:</dt>

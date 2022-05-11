@@ -92,7 +92,8 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <hr>
-<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../src-html/org/eldependenci/rpc/RPCInstallation.html#line-6">RPCInstallation</a></span></div>
+<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../src-html/org/eldependenci/rpc/RPCInstallation.html#line-9">RPCInstallation</a></span></div>
+<div class="block">RPC 自定義安裝</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -111,16 +112,24 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#registerProtocol(java.lang.String,java.lang.Class,java.lang.Class)" class="member-name-link">registerProtocol</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;protocolName,
  <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends <a href="protocol/RPCServiceable.html" title="interface in org.eldependenci.rpc.protocol">RPCServiceable</a>&gt;&nbsp;serviceable,
  <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends <a href="protocol/RPCRequester.html" title="interface in org.eldependenci.rpc.protocol">RPCRequester</a>&gt;&nbsp;requester)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">註冊新的 RPC 協定通訊</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#remotes(java.lang.Class...)" class="member-name-link">remotes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;...&nbsp;services)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">註冊 Remote 服務 (Consumer)</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#retrofits(java.lang.Class...)" class="member-name-link">retrofits</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;...&nbsp;services)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">註冊 Retrofit 服務</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#serves(java.lang.Class...)" class="member-name-link">serves</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;...&nbsp;serves)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">註冊 Serve 服務 (Producer)</div>
+</div>
 </div>
 </div>
 </div>
@@ -138,27 +147,49 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="retrofits(java.lang.Class...)">
 <h3>retrofits</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/org/eldependenci/rpc/RPCInstallation.html#line-8">retrofits</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;...&nbsp;services)</span></div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/org/eldependenci/rpc/RPCInstallation.html#line-15">retrofits</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;...&nbsp;services)</span></div>
+<div class="block">註冊 Retrofit 服務</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>services</code> - Retrofit 服務</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="remotes(java.lang.Class...)">
 <h3>remotes</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/org/eldependenci/rpc/RPCInstallation.html#line-10">remotes</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;...&nbsp;services)</span></div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/org/eldependenci/rpc/RPCInstallation.html#line-21">remotes</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;...&nbsp;services)</span></div>
+<div class="block">註冊 Remote 服務 (Consumer)</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>services</code> - Remote 服務</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="serves(java.lang.Class...)">
 <h3>serves</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/org/eldependenci/rpc/RPCInstallation.html#line-12">serves</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;...&nbsp;serves)</span></div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/org/eldependenci/rpc/RPCInstallation.html#line-27">serves</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;...&nbsp;serves)</span></div>
+<div class="block">註冊 Serve 服務 (Producer)</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serves</code> - Serve 服務</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="registerProtocol(java.lang.String,java.lang.Class,java.lang.Class)">
 <h3>registerProtocol</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/org/eldependenci/rpc/RPCInstallation.html#line-14">registerProtocol</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;protocolName,
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name"><a href="../../../src-html/org/eldependenci/rpc/RPCInstallation.html#line-35">registerProtocol</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;protocolName,
  <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends <a href="protocol/RPCServiceable.html" title="interface in org.eldependenci.rpc.protocol">RPCServiceable</a>&gt;&nbsp;serviceable,
  <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends <a href="protocol/RPCRequester.html" title="interface in org.eldependenci.rpc.protocol">RPCRequester</a>&gt;&nbsp;requester)</span></div>
+<div class="block">註冊新的 RPC 協定通訊</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>protocolName</code> - 協定通訊名稱</dd>
+<dd><code>serviceable</code> - 協定通訊回應服務</dd>
+<dd><code>requester</code> - 協定通訊請求服務</dd>
+</dl>
 </section>
 </li>
 </ul>

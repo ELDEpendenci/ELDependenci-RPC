@@ -13,8 +13,15 @@
 <div class="source-container">
 <pre><span class="source-line-no">001</span><span id="line-1">package org.eldependenci.rpc.context;</span>
 <span class="source-line-no">002</span><span id="line-2"></span>
-<span class="source-line-no">003</span><span id="line-3">public record RPCResponse&lt;T&gt;(long id, boolean success, T result) {</span>
-<span class="source-line-no">004</span><span id="line-4">}</span>
+<span class="source-line-no">003</span><span id="line-3">/**</span>
+<span class="source-line-no">004</span><span id="line-4"> * RPC 回傳內容協定</span>
+<span class="source-line-no">005</span><span id="line-5"> * @param id 追蹤 ID</span>
+<span class="source-line-no">006</span><span id="line-6"> * @param success 回傳是否成功</span>
+<span class="source-line-no">007</span><span id="line-7"> * @param result 回傳結果, {@link RPCResult} 或 {@link RPCError}</span>
+<span class="source-line-no">008</span><span id="line-8"> * @param &lt;T&gt; 回傳結果中的任一類型</span>
+<span class="source-line-no">009</span><span id="line-9"> */</span>
+<span class="source-line-no">010</span><span id="line-10">public record RPCResponse&lt;T&gt;(long id, boolean success, T result) {</span>
+<span class="source-line-no">011</span><span id="line-11">}</span>
 
 
 

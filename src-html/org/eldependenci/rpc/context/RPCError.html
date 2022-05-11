@@ -13,8 +13,14 @@
 <div class="source-container">
 <pre><span class="source-line-no">001</span><span id="line-1">package org.eldependenci.rpc.context;</span>
 <span class="source-line-no">002</span><span id="line-2"></span>
-<span class="source-line-no">003</span><span id="line-3">public record RPCError(int code, String message, String[] errors) {</span>
-<span class="source-line-no">004</span><span id="line-4">}</span>
+<span class="source-line-no">003</span><span id="line-3">/**</span>
+<span class="source-line-no">004</span><span id="line-4"> * 錯誤協定</span>
+<span class="source-line-no">005</span><span id="line-5"> * @param code 錯誤代碼</span>
+<span class="source-line-no">006</span><span id="line-6"> * @param message 錯誤訊息</span>
+<span class="source-line-no">007</span><span id="line-7"> * @param errors 錯誤追蹤</span>
+<span class="source-line-no">008</span><span id="line-8"> */</span>
+<span class="source-line-no">009</span><span id="line-9">public record RPCError(int code, String message, String[] errors) {</span>
+<span class="source-line-no">010</span><span id="line-10">}</span>
 
 
 

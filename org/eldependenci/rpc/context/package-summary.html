@@ -43,7 +43,7 @@ loadScripts(document, 'script');</script>
 <li>
 <p>Package:</p>
 <ul>
-<li>Description</li>
+<li><a href="#package-description">Description</a></li>
 <li><a href="#related-package-summary">Related Packages</a></li>
 <li><a href="#class-summary">Classes and Interfaces</a></li>
 </ul>
@@ -54,7 +54,7 @@ loadScripts(document, 'script');</script>
 <div id="navbar-sub-list">
 <ul class="sub-nav-list">
 <li>Package:&nbsp;</li>
-<li>Description&nbsp;|&nbsp;</li>
+<li><a href="#package-description">Description</a>&nbsp;|&nbsp;</li>
 <li><a href="#related-package-summary">Related Packages</a>&nbsp;|&nbsp;</li>
 <li><a href="#class-summary">Classes and Interfaces</a></li>
 </ul>
@@ -74,6 +74,9 @@ loadScripts(document, 'script');</script>
 </div>
 <hr>
 <div class="package-signature">package <span class="element-name">org.eldependenci.rpc.context</span></div>
+<section class="package-description" id="package-description">
+<div class="block">協定型別類</div>
+</section>
 <section class="summary">
 <ul class="summary-list">
 <li>
@@ -83,11 +86,17 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Package</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><a href="../package-summary.html">org.eldependenci.rpc</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">主類</div>
+</div>
 <div class="col-first odd-row-color"><a href="../annotation/package-summary.html">org.eldependenci.rpc.annotation</a></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">標註類</div>
+</div>
 <div class="col-first even-row-color"><a href="../protocol/package-summary.html">org.eldependenci.rpc.protocol</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">通訊協定接口</div>
+</div>
 </div>
 </div>
 </li>
@@ -99,23 +108,37 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color class-summary class-summary-tab4"><a href="RPCError.html" title="class in org.eldependenci.rpc.context">RPCError</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab4">&nbsp;</div>
+<div class="col-last even-row-color class-summary class-summary-tab4">
+<div class="block">錯誤協定</div>
+</div>
 <div class="col-first odd-row-color class-summary class-summary-tab5"><a href="RPCException.html" title="class in org.eldependenci.rpc.context">RPCException</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab5">&nbsp;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab5">
+<div class="block">RPC錯誤類</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab4"><a href="RPCInfo.html" title="class in org.eldependenci.rpc.context">RPCInfo</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab4">
-<div class="block">RPC 遠端資訊</div>
+<div class="block">RPC 遠端資訊, 認證 token 將在 Serve 服務啟用 <a href="../annotation/AuthorizationRequired.html" title="annotation interface in org.eldependenci.rpc.annotation"><code>AuthorizationRequired</code></a> 的時候使用</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab4"><a href="RPCInfo.FallbackHost.html" title="class in org.eldependenci.rpc.context">RPCInfo.FallbackHost</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab4">&nbsp;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab4">
+<div class="block">後備位址</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab4"><a href="RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab4">&nbsp;</div>
+<div class="col-last even-row-color class-summary class-summary-tab4">
+<div class="block">RPC 傳入內容協定</div>
+</div>
 <div class="col-first odd-row-color class-summary class-summary-tab4"><a href="RPCResponse.html" title="class in org.eldependenci.rpc.context">RPCResponse</a>&lt;T&gt;</div>
-<div class="col-last odd-row-color class-summary class-summary-tab4">&nbsp;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab4">
+<div class="block">RPC 回傳內容協定</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab4"><a href="RPCResult.html" title="class in org.eldependenci.rpc.context">RPCResult</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab4">&nbsp;</div>
+<div class="col-last even-row-color class-summary class-summary-tab4">
+<div class="block">RPC 標準回傳內容協定</div>
+</div>
 <div class="col-first odd-row-color class-summary class-summary-tab5"><a href="RPCUnauthorizedException.html" title="class in org.eldependenci.rpc.context">RPCUnauthorizedException</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab5">&nbsp;</div>
+<div class="col-last odd-row-color class-summary class-summary-tab5">
+<div class="block">認證 token 授權錯誤時，用於 <a href="../annotation/AuthorizationRequired.html" title="annotation interface in org.eldependenci.rpc.annotation"><code>AuthorizationRequired</code></a> 的 Serve 服務。</div>
+</div>
 </div>
 </div>
 </div>

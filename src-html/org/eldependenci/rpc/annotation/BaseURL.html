@@ -18,13 +18,16 @@
 <span class="source-line-no">005</span><span id="line-5">import java.lang.annotation.RetentionPolicy;</span>
 <span class="source-line-no">006</span><span id="line-6">import java.lang.annotation.Target;</span>
 <span class="source-line-no">007</span><span id="line-7"></span>
-<span class="source-line-no">008</span><span id="line-8">@Retention(RetentionPolicy.RUNTIME)</span>
-<span class="source-line-no">009</span><span id="line-9">@Target(ElementType.TYPE)</span>
-<span class="source-line-no">010</span><span id="line-10">public @interface BaseURL {</span>
-<span class="source-line-no">011</span><span id="line-11"></span>
-<span class="source-line-no">012</span><span id="line-12">    String value();</span>
-<span class="source-line-no">013</span><span id="line-13"></span>
-<span class="source-line-no">014</span><span id="line-14">}</span>
+<span class="source-line-no">008</span><span id="line-8">/**</span>
+<span class="source-line-no">009</span><span id="line-9"> * Base URL (僅限 Retrofit 服務)</span>
+<span class="source-line-no">010</span><span id="line-10"> */</span>
+<span class="source-line-no">011</span><span id="line-11">@Retention(RetentionPolicy.RUNTIME)</span>
+<span class="source-line-no">012</span><span id="line-12">@Target(ElementType.TYPE)</span>
+<span class="source-line-no">013</span><span id="line-13">public @interface BaseURL {</span>
+<span class="source-line-no">014</span><span id="line-14"></span>
+<span class="source-line-no">015</span><span id="line-15">    String value();</span>
+<span class="source-line-no">016</span><span id="line-16"></span>
+<span class="source-line-no">017</span><span id="line-17">}</span>
 
 
 
