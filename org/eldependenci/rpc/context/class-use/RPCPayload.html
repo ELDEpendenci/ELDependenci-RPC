@@ -87,20 +87,32 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="../../protocol/ServiceHandler.Response.html" title="class in org.eldependenci.rpc.protocol">ServiceHandler.Response</a></code></div>
-<div class="col-second even-row-color"><span class="type-name-label">ServiceHandler.</span><code><a href="../../protocol/ServiceHandler.html#invokes(org.eldependenci.rpc.context.RPCPayload)" class="member-name-link">invokes</a><wbr>(<a href="../RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;payload)</code></div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">ServiceHandler.</span><code><a href="../../protocol/ServiceHandler.html#handlePayload(org.eldependenci.rpc.context.RPCPayload,boolean)" class="member-name-link">handlePayload</a><wbr>(<a href="../RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;rpcPayload,
+ boolean&nbsp;debug)</code></div>
 <div class="col-last even-row-color">
+<div class="block">異步處理 payload</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="../../protocol/ServiceHandler.Response.html" title="class in org.eldependenci.rpc.protocol">ServiceHandler.Response</a></code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">ServiceHandler.</span><code><a href="../../protocol/ServiceHandler.html#invokes(org.eldependenci.rpc.context.RPCPayload)" class="member-name-link">invokes</a><wbr>(<a href="../RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;payload)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">處理 RPC 請求</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
-<div class="col-second odd-row-color"><span class="type-name-label">RPCRequester.</span><code><a href="../../protocol/RPCRequester.html#offerRequest(org.eldependenci.rpc.context.RPCPayload)" class="member-name-link">offerRequest</a><wbr>(<a href="../RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;payload)</code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">RPCRequester.</span><code><a href="../../protocol/RPCRequester.html#offerRequest(org.eldependenci.rpc.context.RPCPayload)" class="member-name-link">offerRequest</a><wbr>(<a href="../RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;payload)</code></div>
+<div class="col-last even-row-color">
 <div class="block">執行 RPC 請求</div>
 </div>
-<div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><span class="type-name-label">ServiceHandler.</span><code><a href="../../protocol/ServiceHandler.html#shouldCallAsync(org.eldependenci.rpc.context.RPCPayload)" class="member-name-link">shouldCallAsync</a><wbr>(<a href="../RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;payload)</code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><span class="type-name-label">ServiceHandler.</span><code><a href="../../protocol/ServiceHandler.html#shouldCallAsync(org.eldependenci.rpc.context.RPCPayload)" class="member-name-link">shouldCallAsync</a><wbr>(<a href="../RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;payload)</code></div>
+<div class="col-last odd-row-color">
 <div class="block">查看該 RPC 請求是否允許異步</div>
+</div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
+<div class="col-second even-row-color"><span class="type-name-label">ServiceHandler.</span><code><a href="../../protocol/ServiceHandler.html#toFuture(org.eldependenci.rpc.context.RPCPayload,boolean)" class="member-name-link">toFuture</a><wbr>(<a href="../RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;rpcPayload,
+ boolean&nbsp;debug)</code></div>
+<div class="col-last even-row-color">
+<div class="block">將 payload 的處理操作轉換成 異步</div>
 </div>
 </div>
 </section>
@@ -110,7 +122,7 @@ loadScripts(document, 'script');</script>
 </main>
 <footer role="contentinfo">
 <hr>
-<p class="legal-copy"><small><b>© ELDependenci - 2020</b></small></p>
+<p class="legal-copy"><small><b>© ELDependenci-RPC - 2022</b></small></p>
 </footer>
 </div>
 </div>

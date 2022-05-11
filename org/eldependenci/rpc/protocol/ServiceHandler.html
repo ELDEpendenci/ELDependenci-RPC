@@ -92,7 +92,7 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <hr>
-<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/protocol/ServiceHandler.html#line-11">ServiceHandler</a></span></div>
+<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/protocol/ServiceHandler.html#line-12">ServiceHandler</a></span></div>
 <div class="block">服務處理接口，用於傳入處理方法與參數</div>
 </section>
 <section class="summary">
@@ -131,15 +131,27 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">轉換處理結果的型別</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="ServiceHandler.Response.html" title="class in org.eldependenci.rpc.protocol">ServiceHandler.Response</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#invokes(org.eldependenci.rpc.context.RPCPayload)" class="member-name-link">invokes</a><wbr>(<a href="../context/RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;payload)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#handlePayload(org.eldependenci.rpc.context.RPCPayload,boolean)" class="member-name-link">handlePayload</a><wbr>(<a href="../context/RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;rpcPayload,
+ boolean&nbsp;debug)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">異步處理 payload</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="ServiceHandler.Response.html" title="class in org.eldependenci.rpc.protocol">ServiceHandler.Response</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#invokes(org.eldependenci.rpc.context.RPCPayload)" class="member-name-link">invokes</a><wbr>(<a href="../context/RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;payload)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">處理 RPC 請求</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#shouldCallAsync(org.eldependenci.rpc.context.RPCPayload)" class="member-name-link">shouldCallAsync</a><wbr>(<a href="../context/RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;payload)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#shouldCallAsync(org.eldependenci.rpc.context.RPCPayload)" class="member-name-link">shouldCallAsync</a><wbr>(<a href="../context/RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;payload)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">查看該 RPC 請求是否允許異步</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#toFuture(org.eldependenci.rpc.context.RPCPayload,boolean)" class="member-name-link">toFuture</a><wbr>(<a href="../context/RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;rpcPayload,
+ boolean&nbsp;debug)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">將 payload 的處理操作轉換成 異步</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../context/RPCError.html" title="class in org.eldependenci.rpc.context">RPCError</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#toRPCError(java.lang.Exception,boolean)" class="member-name-link">toRPCError</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&nbsp;e,
@@ -162,9 +174,45 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="handlePayload(org.eldependenci.rpc.context.RPCPayload,boolean)">
+<h3>handlePayload</h3>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/protocol/ServiceHandler.html#line-24">handlePayload</a></span><wbr><span class="parameters">(<a href="../context/RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;rpcPayload,
+ boolean&nbsp;debug)</span>
+                                 throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></span></div>
+<div class="block">異步處理 payload
+ <p>
+ 此方式將包含使用 <a href="#toFuture(org.eldependenci.rpc.context.RPCPayload,boolean)"><code>toFuture(RPCPayload, boolean)</code></a>, <a href="#invokes(org.eldependenci.rpc.context.RPCPayload)"><code>invokes(RPCPayload)</code></a> 和 <a href="#finalizeType(java.lang.Object,java.lang.reflect.Type)"><code>finalizeType(Object, Type)</code></a>,
+ 且自帶 BukkitPromise 轉換功能</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>rpcPayload</code> - 請求資料</dd>
+<dd><code>debug</code> - 是否啟用除錯, 若是，則會填入 <a href="../context/RPCError.html#errors()"><code>RPCError.errors()</code></a> 參數</dd>
+<dt>Returns:</dt>
+<dd>異步處理</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></code> - 處理異常</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="toFuture(org.eldependenci.rpc.context.RPCPayload,boolean)">
+<h3>toFuture</h3>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/util/concurrent/CompletableFuture.html" title="class or interface in java.util.concurrent" class="external-link">CompletableFuture</a>&lt;<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;</span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/protocol/ServiceHandler.html#line-32">toFuture</a></span><wbr><span class="parameters">(<a href="../context/RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;rpcPayload,
+ boolean&nbsp;debug)</span></div>
+<div class="block">將 payload 的處理操作轉換成 異步</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>rpcPayload</code> - 請求資料</dd>
+<dd><code>debug</code> - 是否啟用除錯, 若是，則會填入 <a href="../context/RPCError.html#errors()"><code>RPCError.errors()</code></a> 參數</dd>
+<dt>Returns:</dt>
+<dd>異步處理</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="invokes(org.eldependenci.rpc.context.RPCPayload)">
 <h3>invokes</h3>
-<div class="member-signature"><span class="return-type"><a href="ServiceHandler.Response.html" title="class in org.eldependenci.rpc.protocol">ServiceHandler.Response</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/protocol/ServiceHandler.html#line-19">invokes</a></span><wbr><span class="parameters">(<a href="../context/RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;payload)</span>
+<div class="member-signature"><span class="return-type"><a href="ServiceHandler.Response.html" title="class in org.eldependenci.rpc.protocol">ServiceHandler.Response</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/protocol/ServiceHandler.html#line-40">invokes</a></span><wbr><span class="parameters">(<a href="../context/RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;payload)</span>
                          throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></span></div>
 <div class="block">處理 RPC 請求</div>
 <dl class="notes">
@@ -180,7 +228,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="finalizeType(java.lang.Object,java.lang.reflect.Type)">
 <h3>finalizeType</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/protocol/ServiceHandler.html#line-28">finalizeType</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;result,
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/protocol/ServiceHandler.html#line-49">finalizeType</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;result,
  <a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/reflect/Type.html" title="class or interface in java.lang.reflect" class="external-link">Type</a>&nbsp;returnType)</span>
              throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></span></div>
 <div class="block">轉換處理結果的型別</div>
@@ -198,7 +246,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="shouldCallAsync(org.eldependenci.rpc.context.RPCPayload)">
 <h3>shouldCallAsync</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/protocol/ServiceHandler.html#line-36">shouldCallAsync</a></span><wbr><span class="parameters">(<a href="../context/RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;payload)</span>
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/protocol/ServiceHandler.html#line-57">shouldCallAsync</a></span><wbr><span class="parameters">(<a href="../context/RPCPayload.html" title="class in org.eldependenci.rpc.context">RPCPayload</a>&nbsp;payload)</span>
                  throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a></span></div>
 <div class="block">查看該 RPC 請求是否允許異步</div>
 <dl class="notes">
@@ -214,7 +262,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="toRPCError(java.lang.Exception,boolean)">
 <h3>toRPCError</h3>
-<div class="member-signature"><span class="return-type"><a href="../context/RPCError.html" title="class in org.eldependenci.rpc.context">RPCError</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/protocol/ServiceHandler.html#line-44">toRPCError</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&nbsp;e,
+<div class="member-signature"><span class="return-type"><a href="../context/RPCError.html" title="class in org.eldependenci.rpc.context">RPCError</a></span>&nbsp;<span class="element-name"><a href="../../../../src-html/org/eldependenci/rpc/protocol/ServiceHandler.html#line-65">toRPCError</a></span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/18/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&nbsp;e,
  boolean&nbsp;debug)</span></div>
 <div class="block">將錯誤轉換為 RPC 錯誤回傳協定</div>
 <dl class="notes">
@@ -235,7 +283,7 @@ loadScripts(document, 'script');</script>
 </main>
 <footer role="contentinfo">
 <hr>
-<p class="legal-copy"><small><b>© ELDependenci - 2020</b></small></p>
+<p class="legal-copy"><small><b>© ELDependenci-RPC - 2022</b></small></p>
 </footer>
 </div>
 </div>
