@@ -45,8 +45,10 @@ jobs:
         with:
           java-version: '18'
           distribution: 'adopt'
+      - run: |
+          echo version length is -> ${{ steps.version.outputs.length }} 
       - name: Publish package
-        if: ${{ steps.version.outputs.length }} == 3
+        if: steps.version.outputs.length == 3
         run: mvn --batch-mode deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
