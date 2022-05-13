@@ -8,6 +8,7 @@
         <version>0.0.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <version>${project.parent.version}.1</version>
 
     <artifactId>eldependenci-rpc-plugin</artifactId>
 
