@@ -1,5 +1,6 @@
 package org.eldependenci.rpc.implement;
 
+import com.ericlam.mc.eld.ELDPlugin;
 import com.ericlam.mc.eld.misc.DebugLogger;
 import com.ericlam.mc.eld.services.LoggingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,7 +11,6 @@ import io.javalin.plugin.json.JavalinJackson;
 import io.javalin.websocket.WsBinaryMessageContext;
 import io.javalin.websocket.WsContext;
 import io.javalin.websocket.WsMessageContext;
-import org.eldependenci.rpc.ELDependenciRPC;
 import org.eldependenci.rpc.JsonMapperFactory;
 import org.eldependenci.rpc.config.RPCConfig;
 import org.eldependenci.rpc.context.*;
@@ -35,7 +35,7 @@ public final class JavalinServiceable implements RPCServiceable {
     private RPCConfig config;
 
     @Inject
-    private ELDependenciRPC plugin;
+    private VersionGetter versionGetter;
 
     @Inject
     public JavalinServiceable(LoggingService loggingService, JsonMapperFactory factory) {
@@ -50,7 +50,7 @@ public final class JavalinServiceable implements RPCServiceable {
         if (started) return;
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        Thread.currentThread().setContextClassLoader(ELDependenciRPC.class.getClassLoader());
+        Thread.currentThread().setContextClassLoader(ELDPlugin.class.getClassLoader());
 
         // use our own object mapper so that to use bukkit object serializer/deserializer
         this.app = Javalin.create(c -> {
@@ -64,7 +64,7 @@ public final class JavalinServiceable implements RPCServiceable {
         route.get("/", ctx -> {
             ctx.json(Map.of(
                     "status", "ok",
-                    "version", plugin.getDescription().getVersion()
+                    "version", versionGetter.getVersion()
             ));
         });
 
@@ -112,7 +112,7 @@ public final class JavalinServiceable implements RPCServiceable {
             try {
 
                 var future = handler.handlePayload(rpcPayload, ctx.queryParam("debug") != null);
-                ctx.future(future.thenApply(result -> new RPCResponse<>(rpcPayload.id(), result instanceof RPCError, result)));
+                ctx.future(future.thenApply(result -> new RPCResponse<>(rpcPayload.id(), result instanceof RPCResult, result)));
 
             } catch (Exception e) {
                 throw new RPCException(rpcPayload.id(), e);
@@ -120,12 +120,14 @@ public final class JavalinServiceable implements RPCServiceable {
         });
 
         route.exception(Exception.class, (e, ctx) -> {
+            e = toNestedException(e);
             var err = handler.toRPCError(e, ctx.queryParam("debug") != null);
             var rpcResponse = new RPCResponse<>(-1, false, err);
             ctx.status(err.code()).json(rpcResponse);
         });
 
         route.wsException(Exception.class, (e, ctx) -> {
+            e = toNestedException(e);
             var err = handler.toRPCError(e, ctx.queryParam("debug") != null);
             var rpcResponse = new RPCResponse<>(-1, false, err);
             ctx.send(rpcResponse);
@@ -144,6 +146,13 @@ public final class JavalinServiceable implements RPCServiceable {
         });
 
         Thread.currentThread().setContextClassLoader(classLoader);
+    }
+
+    private Exception toNestedException(Exception e) {
+        while (e.getCause() != null && e.getCause() instanceof Exception cause) {
+            e = cause;
+        }
+        return e;
     }
 
 

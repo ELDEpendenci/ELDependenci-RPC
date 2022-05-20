@@ -13,6 +13,10 @@
         <module>eldependenci-rpc-plugin</module>
     </modules>
 
+    <properties>
+        <eld.version>2.0.3-SNAPSHOT</eld.version>
+    </properties>
+
     <repositories>
         <repository>
             <id>papermc</id>
@@ -26,17 +30,23 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.papermc.paper</groupId>
-            <artifactId>paper-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.squareup.retrofit2</groupId>
             <artifactId>retrofit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
         </dependency>
     </dependencies>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>jsr305</artifactId>
+                <version>3.0.2</version>
+                <scope>provided</scope>
+            </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
@@ -75,6 +85,12 @@
                 <scope>compile</scope>
             </dependency>
             <dependency>
+                <groupId>io.github.waterfallmc</groupId>
+                <artifactId>waterfall-api</artifactId>
+                <version>1.18-R0.1-SNAPSHOT</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
                 <groupId>io.papermc.paper</groupId>
                 <artifactId>paper-api</artifactId>
                 <version>1.18.2-R0.1-SNAPSHOT</version>
@@ -82,14 +98,20 @@
             </dependency>
             <dependency>
                 <groupId>org.eldependenci</groupId>
-                <artifactId>eldependenci-framework</artifactId>
-                <version>0.1.6</version>
+                <artifactId>eldependenci-bukkit</artifactId>
+                <version>${eld.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.eldependenci</groupId>
+                <artifactId>eldependenci-bungee</artifactId>
+                <version>${eld.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.eldependenci</groupId>
                 <artifactId>eldependenci-addon</artifactId>
-                <version>0.1.5</version>
+                <version>${eld.version}</version>
                 <scope>provided</scope>
             </dependency>
         </dependencies>

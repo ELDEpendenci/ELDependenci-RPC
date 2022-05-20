@@ -35,7 +35,6 @@ public class RemoteInvocationHandler implements InvocationHandler {
             args = args != null ? args : new String[0];
             var id = System.nanoTime();
             var payload = new RPCPayload(id, method.getName(), serviceName, args, token);
-
             var future = requesterManager.getRequester(service).thenCompose(requester -> requester.offerRequest(payload));
             return requesterManager.handleFuture(future, method.getGenericReturnType());
         }

@@ -65,7 +65,7 @@ public final class ServiceManager implements ServiceHandler {
         if (serviceMethodCache.containsKey(key)) {
             return serviceMethodCache.get(key);
         }
-        for (Method method : service.getDeclaredMethods()) {
+        for (Method method : service.getMethods()) {
             if (method.getName().equals(name) && method.canAccess(obj)) {
                 this.serviceMethodCache.put(key, method);
                 return method;

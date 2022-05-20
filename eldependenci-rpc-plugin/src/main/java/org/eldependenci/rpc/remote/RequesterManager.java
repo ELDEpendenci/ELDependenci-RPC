@@ -5,7 +5,6 @@ import com.ericlam.mc.eld.services.LoggingService;
 import com.ericlam.mc.eld.services.ScheduleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Injector;
-import org.eldependenci.rpc.ELDependenciRPC;
 import org.eldependenci.rpc.JsonMapperFactory;
 import org.eldependenci.rpc.config.RPCRemoteConfig;
 import org.eldependenci.rpc.context.RPCInfo;
@@ -30,12 +29,6 @@ public final class RequesterManager {
 
     private final Map<String, Class<? extends RPCRequester>> requesterMap = new ConcurrentHashMap<>();
     private final Map<String, Map<Class<?>, RPCRequester>> instanceMap = new ConcurrentHashMap<>();
-
-    @Inject
-    private ScheduleService scheduleService;
-
-    @Inject
-    private ELDependenciRPC plugin;
 
     @Inject
     private Injector injector;
@@ -81,7 +74,7 @@ public final class RequesterManager {
         }
 
         var ins = instances.get(service);
-        if (ins != null){
+        if (ins != null) {
             return CompletableFuture.completedFuture(ins);
         }
 
@@ -109,9 +102,6 @@ public final class RequesterManager {
         if (jt.isTypeOrSubTypeOf(CompletableFuture.class)) {
             realFuture = future.thenApply(r -> this.mapper.convertValue(r, jt.getBindings().getBoundType(0)));
             return realFuture;
-        } else if (jt.isTypeOrSubTypeOf(ScheduleService.BukkitPromise.class)) {
-            realFuture = future.thenApply(r -> this.mapper.convertValue(r, jt.getBindings().getBoundType(0)));
-            return scheduleService.callAsync(plugin, realFuture::join);
         } else {
             return realFuture.join();
         }

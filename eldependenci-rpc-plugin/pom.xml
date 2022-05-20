@@ -8,7 +8,7 @@
         <version>0.0.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>${project.parent.version}.1</version>
+    <version>0.2.0-SNAPSHOT</version>
 
     <artifactId>eldependenci-rpc-plugin</artifactId>
 
@@ -20,8 +20,20 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>io.github.waterfallmc</groupId>
+            <artifactId>waterfall-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.eldependenci</groupId>
-            <artifactId>eldependenci-framework</artifactId>
+            <artifactId>eldependenci-bukkit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eldependenci</groupId>
+            <artifactId>eldependenci-bungee</artifactId>
         </dependency>
         <dependency>
             <groupId>org.eldependenci</groupId>

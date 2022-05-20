@@ -1,4 +1,4 @@
 name: ELDependenci-RPC
-main: org.eldependenci.rpc.ELDependenciRPC
+main: org.eldependenci.rpc.bukkit.ELDependenciRPC
 version: ${project.version}
 depend: [ELDependenci]
