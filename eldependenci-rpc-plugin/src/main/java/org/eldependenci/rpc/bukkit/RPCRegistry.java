@@ -1,14 +1,13 @@
 package org.eldependenci.rpc.bukkit;
 
-import com.ericlam.mc.eld.BukkitRegistry;
-import com.ericlam.mc.eld.components.BukkitCommand;
+import com.ericlam.mc.eld.bukkit.CommandNode;
+import com.ericlam.mc.eld.bukkit.ComponentsRegistry;
 import com.ericlam.mc.eld.registration.CommandRegistry;
 import com.ericlam.mc.eld.registration.ListenerRegistry;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.eldependenci.rpc.bukkit.demo.BukkitDemoRemoteService;
-import org.eldependenci.rpc.bungee.demo.DemoRemoteService;
 import org.eldependenci.rpc.bungee.demo.DemoService;
 import org.eldependenci.rpc.command.ELDRPCCommand;
 import org.eldependenci.rpc.command.RPCTestCommand;
@@ -16,11 +15,11 @@ import org.eldependenci.rpc.command.RPCTestCommand;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class RPCRegistry implements BukkitRegistry {
+public class RPCRegistry implements ComponentsRegistry {
 
 
     @Override
-    public void registerCommand(CommandRegistry<BukkitCommand> commandRegistry) {
+    public void registerCommand(CommandRegistry<CommandNode> commandRegistry) {
         commandRegistry.command(ELDPRCCommandBukkit.class, cc -> {
             cc.command(RPCTestCommandBukkit.class);
         });
@@ -32,15 +31,16 @@ public class RPCRegistry implements BukkitRegistry {
     }
 
 
-    public static class ELDPRCCommandBukkit extends ELDRPCCommand<CommandSender> implements BukkitCommand {}
+    public static class ELDPRCCommandBukkit extends ELDRPCCommand<CommandSender> implements CommandNode {
+    }
 
-    public static class RPCTestCommandBukkit extends RPCTestCommand<CommandSender> implements BukkitCommand {
+    public static class RPCTestCommandBukkit extends RPCTestCommand<CommandSender> implements CommandNode {
 
 
         @Override
         public void execute(CommandSender sender) {
             if (!config.enableDemo) {
-                sender.sendMessage( "Demo 沒有被啟用。");
+                sender.sendMessage("Demo 沒有被啟用。");
                 return;
             }
 
@@ -94,10 +94,10 @@ public class RPCRegistry implements BukkitRegistry {
 
             }).whenComplete((v, ex) -> {
                 if (ex != null) {
-                    sender.sendMessage( "測試失敗: " + ex.getMessage());
+                    sender.sendMessage("測試失敗: " + ex.getMessage());
                     ex.printStackTrace();
                 } else {
-                    sender.sendMessage( "測試完成。");
+                    sender.sendMessage("測試完成。");
                 }
             });
         }

@@ -14,7 +14,7 @@
     </modules>
 
     <properties>
-        <eld.version>2.0.3-SNAPSHOT</eld.version>
+        <eld.version>2.0.4-SNAPSHOT</eld.version>
     </properties>
 
     <repositories>
