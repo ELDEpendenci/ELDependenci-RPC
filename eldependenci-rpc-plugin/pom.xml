@@ -5,10 +5,10 @@
     <parent>
         <artifactId>eldependenci-rpc-module</artifactId>
         <groupId>org.eldependenci</groupId>
-        <version>0.0.3</version>
+        <version>0.0.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.2.2-SNAPSHOT</version>
 
     <artifactId>eldependenci-rpc-plugin</artifactId>
 

@@ -1,10 +1,12 @@
 package org.eldependenci.rpc.context;
 
+import org.eldependenci.rpc.annotation.Authorize;
+
 import javax.annotation.Nullable;
 import java.util.List;
 
 /**
- * RPC 遠端資訊, 認證 token 將在 Serve 服務啟用 {@link org.eldependenci.rpc.annotation.AuthorizationRequired} 的時候使用
+ * RPC 遠端資訊, 認證 token 將在 Serve 服務啟用 {@link Authorize} 的時候使用
  * @param locate Service Class 位置
  * @param host 遠端位址
  * @param protocol 遠端通訊協定

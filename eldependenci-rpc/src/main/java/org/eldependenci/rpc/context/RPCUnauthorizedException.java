@@ -1,7 +1,9 @@
 package org.eldependenci.rpc.context;
 
+import org.eldependenci.rpc.annotation.Authorize;
+
 /**
- * 認證 token 授權錯誤時，用於 {@link org.eldependenci.rpc.annotation.AuthorizationRequired} 的 Serve 服務。
+ * 認證 token 授權錯誤時，用於 {@link Authorize} 的 Serve 服務。
  */
 public class RPCUnauthorizedException extends RPCException {
 

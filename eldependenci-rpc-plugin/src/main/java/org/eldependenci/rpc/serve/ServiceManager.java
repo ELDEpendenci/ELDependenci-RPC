@@ -8,7 +8,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import io.javalin.http.HttpResponseException;
 import org.eldependenci.rpc.JsonMapperFactory;
-import org.eldependenci.rpc.annotation.AuthorizationRequired;
+import org.eldependenci.rpc.annotation.Authorize;
 import org.eldependenci.rpc.annotation.DoAsync;
 import org.eldependenci.rpc.config.RPCConfig;
 import org.eldependenci.rpc.context.RPCError;
@@ -158,17 +158,29 @@ public final class ServiceManager implements ServiceHandler {
     public Response invokes(RPCPayload payload) throws Exception {
         var service = getService(payload.service());
 
-        if (service.getClass().isAnnotationPresent(AuthorizationRequired.class)){
-            var token = Optional.ofNullable(config.token).map(s -> s.isBlank() ? null : s).orElseGet(() -> System.getenv("PRC_TOKEN"));
-            if (token == null || !token.equals(payload.token())){
-                throw new RPCUnauthorizedException(payload.id(), new HttpResponseException(401, "Unauthorized"));
-            }
+        boolean serviceAuthorized = false;
+
+        if (service.getClass().isAnnotationPresent(Authorize.class)){
+            doAuthorize(payload);
+            serviceAuthorized = true;
         }
 
         var method = getServiceMethod(service, payload.method());
+
+        if (method.isAnnotationPresent(Authorize.class) && !serviceAuthorized){
+            doAuthorize(payload);
+        }
+
         var args = method.getParameterCount() == 0 ? new Object[0] : payload.parameters();
         var returned = invokeServiceMethod(service, method, args);
         return new Response(returned, method.getGenericReturnType());
+    }
+
+    private void doAuthorize(RPCPayload payload) throws RPCUnauthorizedException {
+        var token = Optional.ofNullable(config.token).map(s -> s.isBlank() ? null : s).orElseGet(() -> System.getenv("PRC_TOKEN"));
+        if (token == null || !token.equals(payload.token())){
+            throw new RPCUnauthorizedException(payload.id(), new HttpResponseException(401, "Unauthorized"));
+        }
     }
 
     @Override
